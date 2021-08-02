@@ -5,23 +5,14 @@ ipwm_t SBUSIN[16];
 static unsigned short RC_channels[16];
 
 /*
-å‡½æ•°æè¿°ï¼šSBUS è§£ç å‡½æ•°
-å‡½æ•°å®ç°ï¼š
-è¾“å…¥å‚æ•°ï¼šbuffer[] æºç æ•°æ®
-è¾“å‡ºå‚æ•°ï¼š
-æ³¨æ„äº‹é¡¹ï¼š
+º¯ÊıÃèÊö£ºSBUS ½âÂëº¯Êı
+º¯ÊıÊµÏÖ£º
+ÊäÈë²ÎÊı£ºbuffer[] Ô´ÂëÊı¾İ
+Êä³ö²ÎÊı£º
+×¢ÒâÊÂÏî£º
 */
 void SBUS_Decode(unsigned char buffer[])
 {
-    /*
-    ç§»ä½æ“ä½œä¼˜å…ˆçº§é«˜äºæŒ‰ä½æ“ä½œ
-    buffer[1]=0110 1110 buffer[2]=0111 1110 0x07FF=0000 0111 1111 1111;
-    buffer[2]<<8=0111 1110 0000 0000;
-    buffer[1] | buffer[2]<<8= 0000 0000 0110 1110 | 0111 1110 0000 0000 = 0111 1110 0110 1110;
-    buffer[1] | buffer[2]<<8 & 0x07FF = 0111 1110 0110 1110 & 0000 0111 1111 1111 = 0000 0110 0110 1110
-
-    åŸè§£æä»£ç ï¼š
-
     RC_channels[0]  = ((buffer[1]    |buffer[2]<<8)                 & 0x07FF);
     RC_channels[1]  = ((buffer[6]>>4 |buffer[7]<<4)                 & 0x07FF);
     RC_channels[2]  = ((buffer[3]>>6 |buffer[4]<<2 |buffer[5]<<10)  & 0x07FF);
@@ -38,37 +29,19 @@ void SBUS_Decode(unsigned char buffer[])
     RC_channels[13] = ((buffer[18]>>7|buffer[19]<<1|buffer[20]<<9)  & 0x07FF);
     RC_channels[14] = ((buffer[20]>>2|buffer[21]<<6)                & 0x07FF);
     RC_channels[15] = ((buffer[21]>>5|buffer[22]<<3)                & 0x07FF); 
-    */
-  
 
-    RC_channels[0]  = ((buffer[1]    |buffer[2]<<8)                 & 0x07FF);
-    RC_channels[1]  = ((buffer[2]>>3 |buffer[3]<<5)                 & 0x07FF);
-    RC_channels[2]  = ((buffer[3]>>6 |buffer[4]<<2 |buffer[5]<<10)  & 0x07FF);
-    RC_channels[3]  = ((buffer[5]>>1 |buffer[6]<<7)                 & 0x07FF);
-    RC_channels[4]  = ((buffer[6]>>4 |buffer[7]<<4)                 & 0x07FF);
-    RC_channels[5]  = ((buffer[7]>>7 |buffer[8]<<1 |buffer[9]<<9)   & 0x07FF);
-    RC_channels[6]  = ((buffer[9]>>2 |buffer[10]<<6)                & 0x07FF);
-    RC_channels[7]  = ((buffer[10]>>5|buffer[11]<<3)                & 0x07FF);
-    RC_channels[8]  = ((buffer[12]   |buffer[13]<<8)                & 0x07FF);
-    RC_channels[9]  = ((buffer[13]>>3|buffer[14]<<5)                & 0x07FF);
-    RC_channels[10] = ((buffer[14]>>6|buffer[15]<<2|buffer[16]<<10) & 0x07FF);
-    RC_channels[11] = ((buffer[16]>>1|buffer[17]<<7)                & 0x07FF);
-    RC_channels[12] = ((buffer[17]>>4|buffer[18]<<4)                & 0x07FF);
-    RC_channels[13] = ((buffer[18]>>7|buffer[19]<<1|buffer[20]<<9)  & 0x07FF);
-    RC_channels[14] = ((buffer[20]>>2|buffer[21]<<6)                & 0x07FF); 
-    RC_channels[15] = ((buffer[21]>>5|buffer[22]<<3)                & 0x07FF);
 
-        SBUS_IN();
+    SBUS_IN();
 
 }
 
 
 /*
-å‡½æ•°æè¿°ï¼šè·å–é€šé“å·
-å‡½æ•°å®ç°ï¼š
-è¾“å…¥å‚æ•°ï¼šchannel é€šé“å·
-è¾“å‡ºå‚æ•°ï¼štemp--sbus å„é€šé“æ•°æ®å€¼
-æ³¨æ„äº‹é¡¹ï¼š
+º¯ÊıÃèÊö£º»ñÈ¡Ä³¸öÍ¨µÀµÄpwmÖµ
+º¯ÊıÊµÏÖ£º
+ÊäÈë²ÎÊı£ºchannel Í¨µÀºÅ
+Êä³ö²ÎÊı£ºtemp--sbus ¸÷Í¨µÀÊı¾İÖµ
+×¢ÒâÊÂÏî£º
 */
 int GetChannel(int channel)
 {
@@ -82,69 +55,63 @@ int GetChannel(int channel)
 }
 
 /*
-å‡½æ•°æè¿°ï¼šSBUS æ¥æ”¶å‡½æ•°
-å‡½æ•°å®ç°ï¼š
-è¾“å…¥å‚æ•°ï¼š
-è¾“å‡ºå‚æ•°ï¼š
-æ³¨æ„äº‹é¡¹ï¼š
+º¯ÊıÃèÊö£ºSBUS ½ÓÊÕº¯Êı
+º¯ÊıÊµÏÖ£º
+ÊäÈë²ÎÊı£º
+Êä³ö²ÎÊı£º
+×¢ÒâÊÂÏî£º
 */
 void  SBUS_Rev(void)
 {
-    unsigned char     buf[256],tmp[25],FCCdata[25];
-    unsigned char     head=0, tail=0,temp=0;
-    unsigned char     ptr, len,idx;
-    unsigned short    RxQueLen, numread;
+    static unsigned char     buf[256],tmp[25],FCCdata[25];
+    static unsigned char     head=0, tail=0,temp=0;
+    static unsigned char     ptr, len,idx;
+    static unsigned short    RxQueLen, numread;
+	//»Ê£º´®¿Ú¾Å½ÓÊÕÊı¾İ³¤¶È
+    RxQueLen=FComRxLen(FCOM9);
+	//»Ê£ºÈç¹û²»´óÓÚ25×Ö½ÚËµÃ÷¿ÉÄÜÃ»ÓĞ¶ÁÈ¡³É¹¦
+    numread=RxQueLen>25?25:RxQueLen;
+	//»Ê£º¶Áµ½µÄÊı¾İ³¤¶È²»Îª0
+    if (numread) 		//»Ê£ºÓĞÊı¾İµÄ»°ÔÙÈ¥¶Á
+     	FComIn(FCOM9,tmp,numread);	//»Ê£º½«Êı¾İÈ«²¿¶Á½øÀ´
 
-    while(1)
-    {
-    	//OSTimeDly(5);
-		
-        RxQueLen=FComRxLen(FCOM9);
-
-        numread=RxQueLen>25?25:RxQueLen;
-
-        if (numread) 
-            FComIn(FCOM9,tmp,numread);
-
-        for(idx=0;idx<numread;idx++)
-        { 
-            buf[head++]=tmp[idx]; 
-   
-        }
-
-        len=(head-tail);
-
-        while (len>=sizeof(FCCdata)) 
-        {
-	    temp =(unsigned char)(tail+24);
-            
-            if((buf[tail]==0x0F) && ((buf[temp]==0x04)||(buf[temp]==0x14)||(buf[temp]==0x24)||(buf[temp]==0x34)))
-            {
-                ptr=tail; 
-                for(idx=0;idx<sizeof(FCCdata);idx++)
-                {
-                     FCCdata[idx]=buf[ptr++];
-                     buf[ptr] = 0;
-                }
-                SBUS_Decode(FCCdata);
-                tail += sizeof(FCCdata); 
-            }	
-            else tail ++;
-            
-            len=(head-tail);			
-        }
-        
+    for(idx=0;idx<numread;idx++)
+    { 
+        buf[head++]=tmp[idx]; 		//»Ê£º½«´®¿Ú¶Áµ½µÄÊı¾İÈ«²¿×°ÔØµ½bufÀïÃæ
     }
-  
+
+    len = (head - tail);		//»Ê£ºbufµÄ×Ü³¤¶È
+
+    while (len>=sizeof(FCCdata)) 
+    {
+ 		temp =(unsigned char)(tail+24);
+            
+		if((buf[tail]==0x0F) && ((buf[temp]==0x04)||(buf[temp]==0x14)||(buf[temp]==0x24)||(buf[temp]==0x34)))
+		{
+    		ptr=tail; 
+  	      	for(idx=0;idx<sizeof(FCCdata);idx++)
+        	{
+            	FCCdata[idx]=buf[ptr++];
+             	buf[ptr] = 0;
+        	}
+     		SBUS_Decode(FCCdata);		//»Ê£ºsbus½âÂë
+        	tail += sizeof(FCCdata); //»Ê£º¶ÁÈ¡ÁËÒ»Ö¡µÄÒ£¿ØÆ÷Êı¾İ
+    	}	
+    	else tail ++;
+            
+    	len=(head-tail);			
+   }//»Ê£ºend while 
+        
 }
+  
 
 
 /*
-å‡½æ•°æè¿°ï¼šè·å– SBUS é€šé“çš„é«˜ç”µå¹³
-å‡½æ•°å®ç°ï¼š
-è¾“å…¥å‚æ•°ï¼š
-è¾“å‡ºå‚æ•°ï¼š
-æ³¨æ„äº‹é¡¹ï¼š
+º¯ÊıÃèÊö£º»ñÈ¡ SBUS Í¨µÀµÄ¸ßµçÆ½
+º¯ÊıÊµÏÖ£º
+ÊäÈë²ÎÊı£º
+Êä³ö²ÎÊı£º
+×¢ÒâÊÂÏî£º
 */
 void SBUS_IN(void)
 {
@@ -155,7 +122,15 @@ void SBUS_IN(void)
     {
        SBUSIN[idx].pwmhi=(double)GetChannel(idx+1)/1000.0;	     	
     }
-
-        
+  
 }
 
+
+void debug_sbus()
+{
+	printf("CHANNEL1 is :%f\r\n",RC_channels[0]);
+	printf("CHANNEL2 is :%f\r\n",RC_channels[1]);
+	printf("CHANNEL3 is :%f\r\n",RC_channels[2]);
+	printf("CHANNEL4 is :%f\r\n",RC_channels[3]);
+	
+}

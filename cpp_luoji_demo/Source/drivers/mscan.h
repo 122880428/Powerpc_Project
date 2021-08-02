@@ -141,11 +141,11 @@ static 	unsigned short 			bCANTxBufHead3;
 static 	unsigned short   		bCANTxBufTail3;
 
 
-void InitMsCAN(unsigned char canChannalNum,unsigned char canBaudRate);
-void MsCANIntInit(unsigned char canChannalNum,unsigned char mode);
-unsigned short MsCANSend( unsigned char canChannalNum, canbuff_t *ps_Buffer);
-unsigned short MsCANSendOneMsg(unsigned char canChannalNum);
-void MsCANRevOneMsg(unsigned char canChannalNum);
-void MsCANInterruptHandler(unsigned char canChannalNum);
+void InitMsCAN(unsigned char canChannalNum,unsigned char canBaudRate);			/*can初始化*/
+void MsCANIntInit(unsigned char canChannalNum,unsigned char mode);				/*can中断初始化*/
+unsigned short MsCANSend( unsigned char canChannalNum, canbuff_t *ps_Buffer);	/**/
+unsigned short MsCANSendOneMsg(unsigned char canChannalNum);					/*can发送函数*/
+void MsCANRevOneMsg(unsigned char canChannalNum);								/*can读取数据*/
+void MsCANInterruptHandler(unsigned char canChannalNum);						/*can中断处理函数*/
 
 #endif

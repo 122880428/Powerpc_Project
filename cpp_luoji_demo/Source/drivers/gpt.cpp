@@ -1,6 +1,13 @@
 #include"gpt.h"
 
 
+/*
+函数介绍：通用定时器使能开启
+函数实现：
+输入参数：val--定时器响应时间
+返回值：无
+注意事项：无
+*/
 void    GPT_Enable(unsigned short val)
 {
        
@@ -23,7 +30,13 @@ void    GPT_Enable(unsigned short val)
       GPT.MODE.B.STOP_CONT = 0x1;
       
 }
-
+/*
+函数介绍：通用定时器使能关闭
+函数实现：
+输入参数：无
+返回值：无
+注意事项：无
+*/
 void  GPT_Disable(void)
 {
       GPT.MODE.B.STOP_CONT = 0x0;
@@ -31,7 +44,13 @@ void  GPT_Disable(void)
 
 }
 
-
+/*
+函数介绍：通用定时器中断
+函数实现：
+输入参数：无
+返回值：无
+注意事项：无
+*/
 void  GPT_InterruptHandler(void)
 {
       volatile unsigned long int_temp;
@@ -43,7 +62,13 @@ void  GPT_InterruptHandler(void)
 
 }
 
-
+/*
+函数介绍：外部中断设置
+函数实现：
+输入参数：val-中断响应时间
+返回值：无
+注意事项：无
+*/
 void    IRQ0_SetDiv(unsigned short val)
 {
       unsigned short divider;
@@ -54,19 +79,38 @@ void    IRQ0_SetDiv(unsigned short val)
 
 }
 
+/*
+函数介绍：外部中断使能开启
+函数实现：
+输入参数：无
+返回值：无
+注意事项：无
+*/
 void    IRQ0_Enable(void)
 {
        *(volatile unsigned short *)(IRQ0ENADDR) = 0x1;
  
 }
 
-
+/*
+函数介绍：外部中断使能关闭
+函数实现：
+输入参数：无
+返回值：无
+注意事项：无
+*/
 void    IRQ0_Disable(void)
 {
        *(volatile unsigned short *)(IRQ0ENADDR) = 0x0;
  
 }
-
+/*
+函数介绍：外部中断函数
+函数实现：
+输入参数：无
+返回值：无
+注意事项：无
+*/
 void  IRQ0_InterruptHandler(void)
 {
     /*

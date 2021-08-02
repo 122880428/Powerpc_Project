@@ -66,8 +66,6 @@
 #define DBAT3U_VAL IBAT3U_VAL
 
 
-
-
 asm void mmu_cache_init();
 asm void init_caches();
 asm void EnableAndInvalidateDataCache();
@@ -79,6 +77,8 @@ asm void AddrTranslationOff();
 asm void FlushDataCache();
 asm void DisableDataCache();
 asm void DisableInstCache(); 
+
+
 
 #endif
 

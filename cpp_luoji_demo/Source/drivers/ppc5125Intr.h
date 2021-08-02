@@ -2,16 +2,17 @@
 #define __INCppc5125Intrh
 
 
+
 #define IPIC_ADDR   0x80000C00
 
 typedef int 		(*FUNCPTR) ();	   /* ptr to function returning int */
-typedef void 		(*VOIDFUNCPTR) (); /* ptr to function returning void */
+typedef void 		(*VOIDFUNCPTR) (int); /* ptr to function returning void */
 typedef double 		(*DBLFUNCPTR) ();  /* ptr to function returning double*/
 typedef float 		(*FLTFUNCPTR) ();  /* ptr to function returning float */
 
 /* interrupt number definitions */
 #define INT_NULL		0	/* level 0 interrupt */
-#define INT_GPT10		1	/* level 1 interrupt */
+#define INT_GPT10d		1	/* level 1 interrupt */
 #define INT_GPT11		2	/* level 2 interrupt */
 #define INT_SDHC2		3	/* level 3 interrupt */
 #define INT_FEC1		4	/* level 4 interrupt */
@@ -92,6 +93,8 @@ typedef float 		(*FLTFUNCPTR) ();  /* ptr to function returning float */
 #define PPC5125IPICSIMSRL       (IPIC_ADDR+0x24)
 #define	PPC5125IPICSEPNR	    (IPIC_ADDR+0x2C)
 #define	PPC5125IPICSEMSR       	(IPIC_ADDR+0x38)
+
+
 
 /* typedefs */
 

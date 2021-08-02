@@ -70,7 +70,7 @@ extern XFCommStruc             XFCOM[9];
 #define  COMM_PARITY_EVEN        1
 #define  COMM_PARITY_ODD         2
 
-
+//皇：挂载在fpga下的串口，区别于cpu的串口
 #define  FCOM1           0               /*[Com Specific]*/             
 #define  FCOM2           1
 #define  FCOM3           2                         
@@ -94,15 +94,15 @@ extern XFCommStruc            XFCOM[9];             /* XR16L788 */
 *********************************************************************************************************
 */
 
-void           FComSetIOBase(void);    
-void FComInit(unsigned char Port, long BaudRate,unsigned char Parity,unsigned char StopBit,unsigned short RxFifoNum,unsigned char Mode_422_232);
-unsigned short  FComIn (unsigned char port,  unsigned char buf[], unsigned short len);
-unsigned short  FComOut(unsigned char port, unsigned char buf[], unsigned short len);
-unsigned short  FComTxLen (unsigned char port);
-unsigned short  FComRxLen (unsigned char port);
-unsigned short FComInPoll (unsigned char port);
-void  FComRxInterruptHandler(unsigned char port);
-void  FComInterruptHandler(void);
+void           FComSetIOBase(void);															/*设置串口基地址初始化*/    
+void FComInit(unsigned char Port, long BaudRate,unsigned char Parity,unsigned char StopBit,unsigned short RxFifoNum,unsigned char Mode_422_232);		/*串口初始化*/
+unsigned short  FComIn (unsigned char port,  unsigned char buf[], unsigned short len);		/*串口读取缓冲区数据*/
+unsigned short  FComOut(unsigned char port, unsigned char buf[], unsigned short len);		/*串口发送缓冲区数据*/
+unsigned short  FComTxLen (unsigned char port);												/*串口发送缓冲区数据长度查询*/
+unsigned short  FComRxLen (unsigned char port);												/*串口接收缓冲区数据长度查询*/
+unsigned short FComInPoll (unsigned char port);												/**/
+void  FComRxInterruptHandler(unsigned char port);											/*串口中断处理函数*/
+void  FComInterruptHandler(void);															/*串口接收中断处理函数*/
 
 
 

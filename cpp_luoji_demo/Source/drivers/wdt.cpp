@@ -2,6 +2,13 @@
 
 #define  IPS_CLOCK_FREQ  66666666
 
+/*
+* 函数介绍：看门狗使能开启
+* 函数实现：
+* 输入参数：val--看门狗时间
+* 返回值  ：无
+* 注意事项：无
+*/
 void  WDT_Enable(unsigned short val)  /*time =1ms*val  val>1*/
 {
    unsigned short swtc;
@@ -13,6 +20,13 @@ void  WDT_Enable(unsigned short val)  /*time =1ms*val  val>1*/
    WDT_Lock();
 }
 
+/*
+* 函数介绍：看门狗使能关闭
+* 函数实现：
+* 输入参数：无
+* 返回值  ：无
+* 注意事项：无
+*/
 void  WDT_Disable(void)
 {
 
@@ -21,6 +35,13 @@ void  WDT_Disable(void)
 
 
 
+/*
+* 函数介绍：看门狗参数配置
+* 函数实现：
+* 输入参数：无
+* 返回值  ：无
+* 注意事项：无
+*/
 void  WDT_Lock(void)
 {
    

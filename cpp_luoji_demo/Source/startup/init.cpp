@@ -30,33 +30,57 @@ void  Sys_Init(void)
     int_disable(); 				//打开中断总开关   
     WDT_Disable();      		//打开看门狗
 	
+	
+	// PPC_ComInit(COM1,115200,COM_PARITY_NONE,1,RS232);
+    PPC_ComInit(COM2,115200,COM_PARITY_NONE,1,RS232);
+    
+    //PPC_ComEnableInterrupt(COM1);
+    PPC_ComEnableInterrupt(COM2);
+	
   	//皇：串口的初始化设置
     FComSetIOBase();
-    FComInit(FCOM1,921600,COM_PARITY_NONE,1,64,RS422);
-    FComInit(FCOM2,921600,COM_PARITY_NONE,1,64,RS422);
-    FComInit(FCOM3,115200,COM_PARITY_NONE,1,64,RS422);
-    FComInit(FCOM4,115200,COM_PARITY_NONE,1,64,RS422);
-    FComInit(FCOM5,115200,COM_PARITY_NONE,1,64,RS422);
-    FComInit(FCOM6,115200,COM_PARITY_NONE,1,64,RS422);
-    FComInit(FCOM7,115200,COM_PARITY_NONE,1,64,RS422);
-    FComInit(FCOM8,115200,COM_PARITY_NONE,1,64,RS422);
-    FComInit(FCOM9,115200,COM_PARITY_NONE,1,64,RS422);
-
-
-    /*IRQ0_Disable();
+    //皇：串口的初始化可以选择是232模式还是422模式。
+    FComInit(FCOM1,115200,COM_PARITY_NONE,1,64,RS232);
+    FComInit(FCOM2,115200,COM_PARITY_NONE,1,64,RS232);	//gcs
+    FComInit(FCOM3,115200,COM_PARITY_NONE,1,64,RS232);
+    FComInit(FCOM4,115200,COM_PARITY_NONE,1,64,RS232);
+    FComInit(FCOM5,115200,COM_PARITY_NONE,1,64,RS232);
+    FComInit(FCOM6,115200,COM_PARITY_NONE,1,64,RS232);
+    FComInit(FCOM7,115200,COM_PARITY_NONE,1,64,RS232);
+    FComInit(FCOM8,115200,COM_PARITY_NONE,1,64,RS232);
+    //FComInit(FCOM9,115200,COM_PARITY_NONE,1,64,RS232);
+    FComInit(FCOM9,100000,COM_PARITY_EVEN,2,8,RS232);
+	
+	
+	//皇：can总线相关内容
+	
+	InitMsCAN(CAN_CHANNAL1,CAN_1Mbps);
+    InitMsCAN(CAN_CHANNAL2,CAN_1Mbps);
+    InitMsCAN(CAN_CHANNAL3,CAN_1Mbps);
+    InitMsCAN(CAN_CHANNAL4,CAN_1Mbps); 
+    
+    MsCANIntInit(CAN_CHANNAL1,CAN_BASE_FRAME);
+    MsCANIntInit(CAN_CHANNAL2,CAN_BASE_FRAME);
+    MsCANIntInit(CAN_CHANNAL3,CAN_BASE_FRAME);
+    MsCANIntInit(CAN_CHANNAL4,CAN_BASE_FRAME);  
+	
+	
+    
+    IRQ0_Disable();
     IRQ0_SetDiv(IRQ0DIVFREQ);
     
     FreqInit();
     PwmInit();
+    
     intInit();
-    IRQ0_Enable(); */
+    IRQ0_Enable(); 
     /* GPT_Enable(1000); */
    
     time_init();  		//定时器初始化
-    time_enable();
-    printf("time_enable...!\n\r");
-    int_enable();
-    printf("init ok!!\n\r");
+    time_enable();		//打开定时器中断，这个中断打开之后才能使用任务调度
+    
+    int_enable();		//打开中断总开关
+    printf("init OK!\n\r");
 }
     
 #endif    

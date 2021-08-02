@@ -28,7 +28,7 @@ extern "C"
 {
 #endif
 
-void  AnalogIn(unsigned char ch,double *volts);//AD ç”µåŽ‹é‡‡æ ·
+void  AnalogIn(unsigned char ch,double *volts);//AD µçÑ¹²ÉÑù
 
 #ifdef _cplusplus
 }

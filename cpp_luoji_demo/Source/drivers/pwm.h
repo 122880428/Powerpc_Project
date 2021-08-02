@@ -39,8 +39,8 @@ typedef struct{
 
 extern pwm_t   PWMOUT[18];
 
-void PwmInit(void);
-void PwmHighOut(unsigned char channel);
-void PwmPerOut(unsigned char channel);
+void PwmInit(void);							/*PWM初始化*/
+void PwmHighOut(unsigned char channel);		/*PWM高电平时间*/
+void PwmPerOut(unsigned char channel);		/*PWM周期*/
 
 #endif

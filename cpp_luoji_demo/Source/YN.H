@@ -68,7 +68,6 @@ typedef struct  {
 #include "drivers\io.h"
 #include "drivers\analog.h"
 #include "drivers\mpxv.h"
-#include "drivers\sbus.h"
 #include "drivers\gps.h"
 #include "drivers\time.h"
 #include "startup\init.h"

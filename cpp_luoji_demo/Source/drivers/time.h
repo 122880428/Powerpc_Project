@@ -7,6 +7,7 @@ extern   unsigned char    tag_200us;
 extern   unsigned char    tag_1ms;
 extern   unsigned char    tag_5ms;
 extern   unsigned char    tag_10ms;
+extern   unsigned char    tag_14ms;
 extern   unsigned char    tag_20ms;
 extern   unsigned char    tag_40ms;
 extern   unsigned char    tag_50ms;

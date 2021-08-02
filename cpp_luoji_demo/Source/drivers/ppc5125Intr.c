@@ -170,7 +170,7 @@ void ppc5125IntrDemux (void)
     /* call the Interrupt Handler */
     
 //这里的C++语法不兼容C语言的，还得想办法改写一下
-    //intrVecTable[intVec].vec (intrVecTable[intVec].arg);
+    intrVecTable[intVec].vec (intrVecTable[intVec].arg);
 
     
     if (intVec == 17)

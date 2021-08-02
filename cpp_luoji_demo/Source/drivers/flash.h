@@ -12,10 +12,9 @@
 
 #define FLASH_SECTOR_SIZE         (0x20000)
 
-
-short  EraseFlashSector(unsigned long flashAdrs);//æ“¦é™¤æ‰‡åŒº
-short ProgFlash(volatile unsigned short * pFB,unsigned long size,unsigned long offset);//å†™æ•°æ®
-unsigned short ReadFlash(unsigned long offset);//è¯»æ•°æ®
+short  EraseFlashSector(unsigned long flashAdrs);//²Á³ıÉÈÇø
+short ProgFlash(volatile unsigned short * pFB,unsigned long size,unsigned long offset);//Ğ´Êı¾İ
+unsigned short ReadFlash(unsigned long offset);//¶ÁÊı¾İ
 
 
 

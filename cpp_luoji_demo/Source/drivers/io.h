@@ -27,7 +27,7 @@
 #define  HIGHLEVEL   0x1
 #define  LOWEVEL     0x0
 
-void DigitalOut(unsigned char channel,unsigned short level); //寮�鍏抽噺杈撳嚭
-unsigned short DigitalIn(unsigned char channel);//寮�鍏抽噺杈撳叆
+void DigitalOut(unsigned char channel,unsigned short level); //开关量输出
+unsigned short DigitalIn(unsigned char channel);//开关量输入
 
 #endif

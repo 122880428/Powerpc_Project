@@ -2,194 +2,117 @@
 //	Project Stationery  //
 //////////////////////////
 #include "YN.H"
+#include "..\drivers\gcs.h"
 #include "test.h"
-static  canbuff_t canTestA;
-
+#include <iostream.h>
+#include "..\dynamics\quadrotor.h"
+#include <vector>
+#include "drivers\sbus.h"
+#include "sbus.h"
 /*
-* º¯Êı½éÉÜ£ºÖ÷º¯ÊıÈë¿Ú´¦
-* º¯ÊıÊµÏÖ£ºÎŞ
-* ÊäÈë²ÎÊı£ºÎŞ
-* ·µ»ØÖµ  £ºÎŞ
-* ×¢ÒâÊÂÏî£º±äÁ¿µÄÉùÃ÷Ò»¶¨Òª·Åµ½º¯ÊıµÄ×îÇ°Ãæ£¬Õâ¸ö±àÒëÆ÷ÒªÇó±È½ÏÑÏ¸ñ
+* å‡½æ•°ä»‹ç»ï¼šä¸»å‡½æ•°å…¥å£å¤„
+* å‡½æ•°å®ç°ï¼šæ— 
+* è¾“å…¥å‚æ•°ï¼šæ— 
+* è¿”å›å€¼  ï¼šæ— 
+* æ³¨æ„äº‹é¡¹ï¼šå˜é‡çš„å£°æ˜ä¸€å®šè¦æ”¾åˆ°å‡½æ•°çš„æœ€å‰é¢ï¼Œè¿™ä¸ªç¼–è¯‘å™¨è¦æ±‚æ¯”è¾ƒä¸¥æ ¼
 */
+
+
 void main()
 {
+    extern Gcs _gcs;
 
-   
-    unsigned char  counter;
-    unsigned char  buff0[256];
-    unsigned char  buff1[256];
-    unsigned char  buf[256];
     unsigned char i = 0;
     unsigned long kk = 0,tt =0;
     unsigned long  cnt = 50; 
-    double volt;
+
     unsigned short val = 10000;
-    box mybox;
+    extern Sbus _sbus;
+    Quadrotor _quadrotor;
+
     
+	//çš‡ï¼šå†…å­˜å¯¹é½æµ‹è¯•
+   /* __declspec(align(8)) double d1=300;
+	printf("dl is %f\r\n",d1);
+	__attribute__((aligned(16))) double jet=25;
+	printf("jet is %f\r\n",jet);*/
+
+    Sys_Init();     //ç³»ç»Ÿåˆå§‹åŒ– 
+    _sbus.init();   //sbusåˆå§‹åŒ–
+    _gcs.init();    //gcsåˆå§‹åŒ–
+
+    //çš‡ï¼šæµ‹è¯•Eigenæ•°å­¦åº“æ˜¯å¦å¯ç”¨ã€‚
+    //test_Eigen();
     
-    
-/*²âÊÔ´úÂë*/    
-    /*mybox.a=2;
-    mybox.b=3;
-    printf("suqare:%d\n",mybox.square());
-    */
-    
-    
-    
-    Sys_Init();    //ÏµÍ³³õÊ¼»¯ 
-    
-    //¿ªÊ¼ÈÎÎñ
-	while (1) 
-	{
-	
+//å¼€å§‹ä»»åŠ¡
+while (1) 
+{
 
-      	//»Ê£ºÕâÒ»¶Î´úÂë»¹Î´¸ãÃ÷°×ËüµÄ×÷ÓÃ£¬Ìõ¼ş±àÒë°ÑËüÔİÊ±ÆÁ±ÎÁË
-       #if 0  
-         
-        if(PPC_ComRxLen(COM1))                          //´®¿Ú
-        {
-    	    cnt =  PPC_ComRxLen(COM1);
-    	    PPC_ComIn(COM1, buf,cnt);
-    	    PPC_ComOut(COM1, buf,cnt);
-        } 
-       #endif 
-        
-		//»Ê£ºÂÖÑ¯¸÷¸ö´®¿Ú
-        if(FComRxLen(FCOM1))                          //´®¿Ú
-        {
-    	    cnt =  FComRxLen(FCOM1);
-    	    FComIn(FCOM1, buf,cnt);
-    	    FComOut(FCOM1, buf,cnt);
-       
-        }
-        
-        if(FComRxLen(FCOM2))                          //´®¿Ú
-        {
-    	    cnt =  FComRxLen(FCOM2);
-    	    FComIn(FCOM2, buf,cnt);
-    	    FComOut(FCOM2, buf,cnt);       
-
-        }
-        
-        if(FComRxLen(FCOM3))                          //´®¿Ú
-        {
-    	    cnt =  FComRxLen(FCOM3);
-    	    FComIn(FCOM3, buf,cnt);
-    	    FComOut(FCOM3, buf,cnt);       
-
-        }
-        
-        if(FComRxLen(FCOM4))                          //´®¿Ú
-        {
-    	    cnt =  FComRxLen(FCOM4);
-    	    FComIn(FCOM4, buf,cnt);
-    	    FComOut(FCOM4, buf,cnt);
-       
-
-        }
-        
-        if(FComRxLen(FCOM5))                          //´®¿Ú
-        {
-    	    cnt =  FComRxLen(FCOM5);
-    	    FComIn(FCOM5, buf,cnt);
-    	    FComOut(FCOM5, buf,cnt);       
-
-        }
-        
-        if(FComRxLen(FCOM6))                          //´®¿Ú
-        {
-    	    cnt =  FComRxLen(FCOM6);
-    	    FComIn(FCOM6, buf,cnt);
-    	    FComOut(FCOM6, buf,cnt);       
-
-        }
-        
-        if(FComRxLen(FCOM7))                          //´®¿Ú
-        {
-    	    cnt =  FComRxLen(FCOM7);
-    	    FComIn(FCOM7, buf,cnt);
-    	    FComOut(FCOM7, buf,cnt);
-       
-
-        }
-        
-        if(FComRxLen(FCOM8))                          //´®¿Ú
-        {
-    	    cnt =  FComRxLen(FCOM8);
-    	    FComIn(FCOM8, buf,cnt);
-    	    FComOut(FCOM8, buf,cnt);       
-
-        }
-        
-        if(FComRxLen(FCOM9))                          //´®¿Ú
-        {
-    	    cnt =  FComRxLen(FCOM9);
-    	    FComIn(FCOM9, buf,cnt);
-    	    FComOut(FCOM9, buf,cnt);       
-
-        }
-        
-        //»Ê£ºÍ¨¹ı¼ÆÊ±Æ÷ÊµÏÖ¶¨Ê±µ÷ÓÃ
-         if (tag_1ms) 		//1000HzÈÎÎñ
-        {   
-            
-            tag_1ms = 0;	//½áÊø´¦Ò»¶¨Òª¼ÇµÃ°ÑtagÖÃ0£¬Ëü»áÔÚ¶¨Ê±Æ÷ÖĞ¶ÏÀïÃæ½øĞĞ¸³Öµ
-        }
-                  
-        if (tag_5ms)		//200HzÈÎÎñ
-        {
-
-           tag_5ms = 0;
-              			  
-        }    
-	
-        
-        if (tag_10ms) 		//100HzÈÎÎñ
-        {   
-            
-            tag_10ms = 0; 
-		        
-        }
-                  
-        if (tag_20ms)		//50HzÈÎÎñ
-        {
-        
-           tag_20ms = 0;
-                 			  
-        }    
-	
-	    if(tag_50ms)		//20HzÈÎÎñ
-	    {
-  
-	        tag_50ms = 0;
-	    }
-	    
-	    if (tag_100ms) 		//10HzÈÎÎñ
-        {   
-            
-            printf("hello! world3!\n"); 
-            tag_100ms = 0;     
-        }
-                  
-        if (tag_500ms)		//2HzÈÎÎñ
-        {
-
-           tag_500ms = 0;           			  
-        } 
-	
-	    if(tag_1s == 1)		//1HzÈÎÎñ
-	    {
-  
-
-	      tag_1s = 0;
-	    }
-	    
-	    if (tag_2s)			//0.5HzÈÎÎñ
-        {
-
-           tag_2s = 0;       			  
-        } 	  
-
-	}
+//çš‡ï¼šé€šè¿‡è®¡æ—¶å™¨å®ç°å®šæ—¶è°ƒç”¨
+ if (tag_1ms) 		//1000Hzä»»åŠ¡
+{   
+    tag_1ms = 0;	//ç»“æŸå¤„ä¸€å®šè¦è®°å¾—æŠŠtagç½®0ï¼Œå®ƒä¼šåœ¨å®šæ—¶å™¨ä¸­æ–­é‡Œé¢è¿›è¡Œèµ‹å€¼
 }
+
+if (tag_5ms)		//200Hzä»»åŠ¡
+{
+ tag_5ms = 0;
+}    
+
+
+if (tag_10ms) 		//100Hzä»»åŠ¡
+{   
+    
+	 //çš‡ï¼šä¸²å£åŠŸèƒ½æµ‹è¯•
+	//test_com(); 
+    tag_10ms = 0; 
+}
+
+if (tag_14ms) 		//Hzä»»åŠ¡
+{   
+    _sbus.run(); 
+    tag_14ms = 0; 
+}
+
+if (tag_20ms)		//50Hzä»»åŠ¡
+{
+    tag_20ms = 0;
+}    
+
+if(tag_50ms)		//20Hzä»»åŠ¡
+{
+
+    _gcs.run();
+    tag_50ms = 0;
+}
+
+if (tag_100ms) 		//10Hzä»»åŠ¡
+{   
+
+    tag_100ms = 0;     
+}
+
+if (tag_500ms)		//2Hzä»»åŠ¡
+{
+    _quadrotor.test_quadrotor_dynamics();
+ tag_500ms = 0;           			  
+} 
+
+if(tag_1s == 1)		//1Hzä»»åŠ¡
+{
+ tag_1s = 0;
+}
+
+if (tag_2s)			//0.5Hzä»»åŠ¡
+{
+//çš‡ï¼šç”¨æ¥æ£€æµ‹c++ç¼–è¯‘å™¨çš„ç‰ˆæœ¬ï¼Œç»“æœæ˜¯c++98çš„æ ‡å‡†
+//printf("_cplusplus:%d\r\n",__cplusplus);
+
+_quadrotor.debug_printf();
+_sbus.debug_sbus();
+
+printf("program is running...!\r\n");
+tag_2s = 0;       			  
+}//endif	  
+}//end while
+}//end main

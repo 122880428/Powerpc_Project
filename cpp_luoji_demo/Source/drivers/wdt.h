@@ -42,8 +42,8 @@
 #define WDT     (*( volatile struct WDT_tag *)        0x80000904) 
  
 
-void  WDT_Lock(void);
-void  WDT_Enable(unsigned short val);
-void  WDT_Disable(void);
+void  WDT_Lock(void);						/*看门狗配置函数*/
+void  WDT_Enable(unsigned short val);		/*看门狗使能开启*/
+void  WDT_Disable(void);					/*看门狗使能关闭*/
 
 #endif

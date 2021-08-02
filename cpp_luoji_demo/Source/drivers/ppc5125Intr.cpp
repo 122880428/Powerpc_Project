@@ -168,7 +168,10 @@ void ppc5125IntrDemux (void)
 	} 
 
     /* call the Interrupt Handler */
-    
+
+   	intrVecTable[intVec].vec (intrVecTable[intVec].arg);
+
+   
 	/*VOIDFUNCPTR 	temp_functor_ptr;
 	temp_functor_ptr = intrVecTable[intVec].vec;
 	(*temp_functor_ptr)(intrVecTable[intVec].arg);*/

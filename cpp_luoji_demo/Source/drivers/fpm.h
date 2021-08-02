@@ -11,9 +11,9 @@
 #define  FREQCH2      1
 
 
-void FreqInit(void);//è½¬é€Ÿåˆå§‹åŒ–
-unsigned short FreqIn(unsigned char channel); //è½¬é€Ÿé‡‡é›†å…¥å£
-unsigned long  FpgaCntGet(void);//FPGAè®¡æ•°å™¨-1us 32bit
+void FreqInit(void);//×ªËÙ³õÊ¼»¯
+unsigned short FreqIn(unsigned char channel); //×ªËÙ²É¼¯Èë¿Ú/*Hz*/
+unsigned long  FpgaCntGet(void); //FPGA¼ÆÊıÆ÷-1us 32bit    /*1us*/
 
 
 #endif

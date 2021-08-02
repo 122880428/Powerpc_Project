@@ -64,13 +64,13 @@ struct GPT_tag {
 #define IRQ0FREQ       2000000   /*hz*/
 #define IRQ0DIVFREQ    50        /*hz*/   
 
-void GPT_Enable(unsigned short val);//é€šç”¨å®šæ—¶å™¨ä½¿èƒ½å¼€å¯
-void GPT_Disable(void);//é€šç”¨å®šæ—¶å™¨ä½¿èƒ½å…³é—­
-void GPT_InterruptHandler(void);//é€šç”¨å®šæ—¶å™¨ä¸­æ–­
+void GPT_Enable(unsigned short val);//Í¨ÓÃ¶¨Ê±Æ÷Ê¹ÄÜ¿ªÆô
+void GPT_Disable(void);//Í¨ÓÃ¶¨Ê±Æ÷Ê¹ÄÜ¹Ø±Õ
+void GPT_InterruptHandler(void);//Í¨ÓÃ¶¨Ê±Æ÷ÖĞ¶Ï
 
-void IRQ0_SetDiv(unsigned short val);//å¤–éƒ¨ä¸­æ–­è®¾ç½®
-void IRQ0_Enable(void);//å¤–éƒ¨ä¸­æ–­ä½¿èƒ½å¼€å¯
-void IRQ0_Disable(void);//å¤–éƒ¨ä¸­æ–­ä½¿èƒ½å…³é—­
-void IRQ0_InterruptHandler(void);//å¤–éƒ¨ä¸­æ–­å‡½æ•°
+void IRQ0_SetDiv(unsigned short val);//Íâ²¿ÖĞ¶ÏÉèÖÃ
+void IRQ0_Enable(void);//Íâ²¿ÖĞ¶ÏÊ¹ÄÜ¿ªÆô
+void IRQ0_Disable(void);//Íâ²¿ÖĞ¶ÏÊ¹ÄÜ¹Ø±Õ
+void IRQ0_InterruptHandler(void);//Íâ²¿ÖĞ¶Ïº¯Êı
 
 #endif

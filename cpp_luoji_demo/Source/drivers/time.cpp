@@ -6,6 +6,7 @@ unsigned char    tag_200us;
 unsigned char    tag_1ms;
 unsigned char    tag_5ms;
 unsigned char    tag_10ms;
+unsigned char    tag_14ms;
 unsigned char    tag_20ms;
 unsigned char    tag_40ms;
 unsigned char    tag_50ms;
@@ -71,7 +72,8 @@ void time_isr (void)
    
                            
     if ((timetick % 5 ) == 0)   tag_5ms  = 1;                          
-	if ((timetick % 10 ) == 0)	tag_10ms  = 1;
+	if ((timetick % 10 ) == 0)	tag_10ms  = 1;		
+	if ((timetick % 14 ) == 0)	tag_14ms  = 1;
 	if ((timetick % 20 ) == 0)	tag_20ms  = 1;
 	if ((timetick % 40  ) == 0)	tag_40ms  = 1;
 	if ((timetick % 50 ) == 0)	tag_50ms  = 1;

@@ -1,11 +1,10 @@
 #include "flash.h"
-
 /*
-å‡½æ•°ä»‹ç»ï¼šæ“¦é™¤æ‰‡åŒº
-å‡½æ•°å®ç°ï¼š
-è¾“å…¥å‚æ•°ï¼šflashAdrs-åœ°å€
-è¿”å›å€¼ï¼šæ— 
-æ³¨æ„äº‹é¡¹ï¼šæ— 
+º¯Êı½éÉÜ£º²Á³ıÉÈÇø
+º¯ÊıÊµÏÖ£º
+ÊäÈë²ÎÊı£ºflashAdrs-µØÖ·
+·µ»ØÖµ£ºÎŞ
+×¢ÒâÊÂÏî£ºÎŞ
 */
 short EraseFlashSector(unsigned long flashAdrs)
  {
@@ -52,14 +51,12 @@ short EraseFlashSector(unsigned long flashAdrs)
      return(retVal);
                 
  }
- 
-
-/*
-å‡½æ•°ä»‹ç»ï¼šå†™æ•°æ®
-å‡½æ•°å®ç°ï¼š
-è¾“å…¥å‚æ•°ï¼špFB-åœ°å€æŒ‡é’ˆï¼Œsize-æ•°æ®å¤§å°ï¼Œoffset-åç§»åœ°å€
-è¿”å›å€¼ï¼šæ— 
-æ³¨æ„äº‹é¡¹ï¼šæ— 
+ /*
+º¯Êı½éÉÜ£ºĞ´Êı¾İ
+º¯ÊıÊµÏÖ£º
+ÊäÈë²ÎÊı£ºpFB-µØÖ·Ö¸Õë£¬size-Êı¾İ´óĞ¡£¬offset-Æ«ÒÆµØÖ·
+·µ»ØÖµ£ºÎŞ
+×¢ÒâÊÂÏî£ºÎŞ
 */
 short ProgFlash(volatile unsigned short * pFB,unsigned long size,unsigned long offset)
 {
@@ -110,14 +107,14 @@ short ProgFlash(volatile unsigned short * pFB,unsigned long size,unsigned long o
          return(retVal);
  } 
  
-
 /*
-å‡½æ•°ä»‹ç»ï¼šè¯»æ•°æ®
-å‡½æ•°å®ç°ï¼š
-è¾“å…¥å‚æ•°ï¼šoffset-åç§»åœ°å€
-è¿”å›å€¼ï¼šæ— 
-æ³¨æ„äº‹é¡¹ï¼šæ— 
+º¯Êı½éÉÜ£º¶ÁÊı¾İ
+º¯ÊıÊµÏÖ£º
+ÊäÈë²ÎÊı£ºoffset-Æ«ÒÆµØÖ·
+·µ»ØÖµ£ºÎŞ
+×¢ÒâÊÂÏî£ºÎŞ
 */
+
 unsigned short ReadFlash(unsigned long offset)
 {
     return (*(volatile unsigned short *)(offset));

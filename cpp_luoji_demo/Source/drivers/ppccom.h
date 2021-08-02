@@ -84,7 +84,7 @@
 #define	DL_230400	((IPS_CLOCK_FREQ/5/(230400)+1)/2)		/* 230400 baud */
 #define	DL_460800	((IPS_CLOCK_FREQ/5/(460800)+1)/2)		/* 460800 baud */
 #define	DL_921600	((IPS_CLOCK_FREQ/5/(921600)+1)/2)		/* 921600 baud */
-
+//皇：这两个是板载的串口，FCOM是挂载在fpga下的串口。
 #define  COM1           0
 #define  COM2           1
 
@@ -114,6 +114,12 @@ typedef struct {
 
 extern CommStruc            COM[2];
 
+//add by huang
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void PPC_ComInit(unsigned char Port,unsigned long BaudRate,unsigned char ParityMode,unsigned char StopBit,unsigned char Mode); 
 unsigned char   PPC_ComIn (unsigned char Port,unsigned char Buf[], unsigned char Len);
 unsigned char   PPC_ComOut(unsigned char Port,unsigned char Buf[], unsigned char Len);
@@ -123,5 +129,10 @@ void    PPC_ComEnableInterrupt(unsigned char Port);
 void    PPC_ComRxInterruptHandler(unsigned char Port);
 void    PPC_ComTxInterruptHandler(unsigned char Port);
 void    PPC_ComFifoInterruptHandler(void);
+
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif

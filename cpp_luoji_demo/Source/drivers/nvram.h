@@ -5,8 +5,8 @@
 
 #define NVRAM_ADDR        0x83000000
 
-long   NvramRead(unsigned long offset,unsigned short * val);
-long   NvramWrite(unsigned long offset,unsigned short val);
+long   NvramRead(unsigned long offset,unsigned short * val);/*nvram∂¡*/
+long   NvramWrite(unsigned long offset,unsigned short val);/*nvram–¥*/
 
 
 #endif

@@ -3,11 +3,11 @@
 
 
 /*
-å‡½æ•°ä»‹ç»ï¼šAD ç”µåŽ‹é‡‡æ ·
-å‡½æ•°å®žçŽ°ï¼š
-è¾“å…¥å‚æ•°ï¼šch-ADé€šé“å·ï¼Œ *volts-ç”µåŽ‹èŒƒå›´ï¼ˆÂ±10Vï¼‰
-è¿”å›žå€¼ï¼š0-OKï¼Œ 1-ERROR
-æ³¨æ„äº‹é¡¹ï¼šæ— 
+º¯Êý½éÉÜ£ºAD µçÑ¹²ÉÑù
+º¯ÊýÊµÏÖ£º
+ÊäÈë²ÎÊý£ºch-ADÍ¨µÀºÅ£¬ *volts-µçÑ¹·¶Î§£¨¡À10V£©
+·µ»ØÖµ£º0-OK£¬ 1-ERROR
+×¢ÒâÊÂÏî£ºÎÞ
 */
 void  AnalogIn(unsigned char ch,double *volts)
 {

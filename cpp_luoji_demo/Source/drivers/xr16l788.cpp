@@ -13,6 +13,13 @@ XFCommStruc            XFCOM[9];
 *********************************************************************************************************
 */
 
+/*
+* 函数介绍：设置串口基地址初始化
+* 函数实现：
+* 输入参数：无
+* 返回值  ：无
+* 注意事项：无
+*/
 void FComSetIOBase(void)
 {
     unsigned char i;
@@ -30,38 +37,42 @@ void FComSetIOBase(void)
 *                                            Configure the Port
 *********************************************************************************************************
 */
-     		
+
+/*
+* 函数介绍：串口初始化
+* 函数实现：
+* 输入参数：Port--通道号，BaudRate--波特率  Parity--奇偶校验位，StopBit--停止位，RxFifoNum--接收缓存大小，Mode_422_232-串口模式
+* 返回值  ：无
+* 注意事项：无
+*/    		
 void FComInit(unsigned char port, long baudrate,unsigned char parity,unsigned char StopBit,unsigned short rxfifonum,unsigned char mode_422_232)
 {
     unsigned short divider;
     
      divider = (unsigned short)(((1.0*UARTFREQ/baudrate)*2+1)/2);
-
-    printf("1init...!\n\r");
-    printf("%d...!\n\r",XFCOM[port].Base );
  
     *(volatile unsigned short *)(XFCOM[port].Base + FCOM_UART_RX_EN)  = 0x0;
-    printf("rxinit...!\n\r");
+
     *(volatile unsigned short *)(XFCOM[port].Base + FCOM_UART_TX_EN)  = 0x0;
-    printf("txinit...!\n\r");
+
     *(volatile unsigned short *)(XFCOM[port].Base + FCOM_UART_BT)     = divider;
-    printf("dividerinit...!\n\r");
+
     if(StopBit == 0x2)
        *(volatile unsigned short *)(XFCOM[port].Base + FCOM_UART_PARITY) = (parity+4);
     else
        *(volatile unsigned short *)(XFCOM[port].Base + FCOM_UART_PARITY) = parity;
-	printf("2init...!\n\r");
+
     if(rxfifonum > XFComFifoRxLen)
         rxfifonum = XFComFifoRxLen;    
-    *(volatile unsigned short *)(XFCOM[port].Base + FCOM_UART_FCR) =  rxfifonum;      /*不能超过350*/
+    *(volatile unsigned short *)(XFCOM[port].Base + FCOM_UART_FCR) =  rxfifonum;      /*2??ü3?1y350*/
     *(volatile unsigned short *)(XFCOM[port].Base + FCOM_UART_422_232) = mode_422_232;
     *(volatile unsigned short *)(XFCOM[port].Base + FCOM_UART_RX_EN)  = 0x1;
     *(volatile unsigned short *)(XFCOM[port].Base + FCOM_UART_TX_EN)  = 0x1;
     *(volatile unsigned short *)(XFCOM[port].Base + FCOM_UART_TIME_OUT) = 80;   
     *(volatile unsigned short *)(XFCOM[port].Base + FCOM_UART_INT_ENABLE)  = 0x1;
-    printf("3init...!\n\r");
+ 
     XFCOM[port].Rxhead=XFCOM[port].Txhead=XFCOM[port].Rxtail=XFCOM[port].Txtail=0;
-    printf("4init...!\n\r");
+  
 }
 		
 
@@ -71,6 +82,14 @@ void FComInit(unsigned char port, long baudrate,unsigned char parity,unsigned ch
 *********************************************************************************************************
 */
 
+
+/*
+* 函数介绍：串口接收中断处理函数
+* 函数实现：
+* 输入参数：port--通道号
+* 返回值  ：无
+* 注意事项：无
+*/
 void FComRxInterruptHandler(unsigned char port)
 { 
     unsigned short    i,cnt;
@@ -93,6 +112,13 @@ void FComRxInterruptHandler(unsigned char port)
 } 
 
 
+/*
+* 函数介绍：串口中断处理函数
+* 函数实现：
+* 输入参数：无
+* 返回值  ：无
+* 注意事项：无
+*/
 void  FComInterruptHandler(void)
 {
     unsigned short     int_temp;
@@ -166,6 +192,14 @@ void  FComInterruptHandler(void)
 *                                            Get Rx Len
 *********************************************************************************************************
 */
+
+/*
+* 函数介绍：串口接收缓冲区数据长度查询
+* 函数实现：
+* 输入参数：port--通道号
+* 返回值  ：len--数据长度
+* 注意事项：无
+*/
 unsigned short  FComRxLen (unsigned char port)
 {
     unsigned short len;
@@ -180,6 +214,14 @@ unsigned short  FComRxLen (unsigned char port)
 *********************************************************************************************************
 *                                            Get Tx Len
 *********************************************************************************************************
+*/
+
+/*
+* 函数介绍：串口发送缓冲区数据长度查询
+* 函数实现：
+* 输入参数：port--通道号
+* 返回值  ：len--数据长度
+* 注意事项：无
 */
 unsigned short  FComTxLen (unsigned char port)
 {
@@ -196,6 +238,14 @@ unsigned short  FComTxLen (unsigned char port)
 *********************************************************************************************************
 *                                          User Get Chars
 *********************************************************************************************************
+*/
+
+/*
+* 函数介绍：串口读取缓冲区数据
+* 函数实现：
+* 输入参数：port--通道号，buf[]--数据存储地址，len--读取的长度
+* 返回值  ：NumIn--实际读取数据长度
+* 注意事项：无
 */
 unsigned short  FComIn (unsigned char port,  unsigned char buf[], unsigned short len)
 {
@@ -224,6 +274,13 @@ unsigned short  FComIn (unsigned char port,  unsigned char buf[], unsigned short
 *********************************************************************************************************
 */
 
+/*
+* 函数介绍：串口发送缓冲区数据
+* 函数实现：
+* 输入参数：port--通道号，buf[]--数据存储地址，len--读取的长度
+* 返回值  ：cnt--发送数据长度
+* 注意事项：无
+*/
 unsigned short  FComOut(unsigned char port, unsigned char buf[], unsigned short len)
 {
     unsigned short  idx;
@@ -266,6 +323,14 @@ unsigned short  FComOut(unsigned char port, unsigned char buf[], unsigned short 
 *********************************************************************************************************
 *                                          User Get Chars  poll
 *********************************************************************************************************
+*/
+
+/*
+* 函数介绍：
+* 函数实现：
+* 输入参数：port--通道号
+* 返回值  ：NumIn--
+* 注意事项：无
 */
 unsigned short  FComInPoll (unsigned char port)
 {

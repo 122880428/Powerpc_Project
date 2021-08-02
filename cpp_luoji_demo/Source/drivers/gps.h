@@ -47,13 +47,13 @@ extern float ptch_std_dev;
 extern  SensorStruc  gps;
     
 /*---------------------------------------------------------------------------*/
-void  GPS_Init(unsigned char com2_mode_422_232,unsigned char com3_mode_422_232);//gpsåˆå§‹åŒ–æ“ä½œ
-void  GPS_Msg42Rx(unsigned char tmp[]);//GPSæ—¶é—´ã€å®šä½çŠ¶æ€ã€ç»çº¬åº¦è§£ç 
-void  GPS_Msg99Rx (unsigned char tmp[]);//GPSé€Ÿç‡ã€èˆªå‘ã€æ—¥æœŸè§£ç 
-void  GPS_timeRx (unsigned char tmp[]);//GPSå¹´ã€æœˆã€æ—¥ã€æ—¶ã€åˆ†ã€ç§’è§£ç 
-void  GpsHeadingRx(unsigned char tmp[]);//GPSèˆªçº¿ã€èˆªå‘ã€ä¿¯ä»°è§’ã€hdgæ ‡å‡†å·®åº¦ã€ä¿¯ä»°è§’æ ‡å‡†å·®åº¦
-void  Task_GpsRev(void);//æ¥æ”¶GPSæ•°æ®
-void  GPS_Monitor(void);//ç›‘æ§GPSæ•°æ®çŠ¶æ€
+void  GPS_Init(unsigned char com2_mode_422_232,unsigned char com3_mode_422_232);//gps³õÊ¼»¯²Ù×÷
+void  GPS_Msg42Rx(unsigned char tmp[]);//GPSÊ±¼ä¡¢¶¨Î»×´Ì¬¡¢¾­Î³¶È½âÂë
+void  GPS_Msg99Rx (unsigned char tmp[]);//GPSËÙÂÊ¡¢º½Ïò¡¢ÈÕÆÚ½âÂë
+void  GPS_timeRx (unsigned char tmp[]);//GPSÄê¡¢ÔÂ¡¢ÈÕ¡¢Ê±¡¢·Ö¡¢Ãë½âÂë
+void  GpsHeadingRx(unsigned char tmp[]);//GPSº½Ïß¡¢º½Ïò¡¢¸©Ñö½Ç¡¢hdg±ê×¼²î¶È¡¢¸©Ñö½Ç±ê×¼²î¶È
+void  Task_GpsRev(void);//½ÓÊÕGPSÊı¾İ
+void  GPS_Monitor(void);//¼à¿ØGPSÊı¾İ×´Ì¬
 
 
 #endif
