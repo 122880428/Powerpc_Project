@@ -2,8 +2,9 @@
 #include "..\drivers\gcs.h"
 #include "..\drivers\sbus.h"
 
-#define EULER 1     //皇：使用前进欧拉法
-#define ODE45 0     //皇：使用ode45
+#define EULER      //皇：使用前进欧拉法
+#define ODE45      //皇：使用ode45
+#define EULER_IMPROVE //王：使用改进欧拉法   注释该行，则不编译EULER_IMPROVE
 
 extern Quadrotor _quadrotor;
 extern Gcs _gcs;
@@ -154,20 +155,25 @@ static Vector3d state_last_att=Vector3d::Zero();
     state_new_pos = state_dot_pos * deltat + state_last_pos;
     state_new_att = state_dot_att * deltat + state_last_att;
 #endif
-#ifdef ODE45
-    const double h=0.01;
 
-    Vector3d* state_last = new Vector3d [4];
-    Vector3d* tempvec = new Vector3d [4];
-    Vector3d* slope = new Vector3d [4];
-    Vector3d* k1 = new Vector3d [4];
-    Vector3d* k2 = new Vector3d [4];
-    Vector3d* k3 = new Vector3d [4];
-    Vector3d* k4 = new Vector3d [4];
-    state_last[0] = state_last_vel;
-    state_last[1] = state_last_ang;
-    state_last[2] = state_last_pos;
-    state_last[3] = state_last_att;
+
+/***********ODE45***************************/
+
+
+#ifdef ODE45
+    const double h=0.01;//步长
+
+    Vector3d* state_last = new Vector3d [4];//y(i)
+    Vector3d* tempvec = new Vector3d [4];//k1+2*k2+2*k3+k4
+    Vector3d* slope = new Vector3d [4];//
+    Vector3d* k1 = new Vector3d [4];//k1=f(x(i),y(i))
+    Vector3d* k2 = new Vector3d [4];//k2=f(x(i)+h/2,y(i)+h*k1/2)
+    Vector3d* k3 = new Vector3d [4];//k3=f(x(i)+h/2,y(i)+h*k2/2)
+    Vector3d* k4 = new Vector3d [4];//k4=f(x(i)+h,y(i)+h*k3)
+    state_last[0] = state_last_vel;//速度
+    state_last[1] = state_last_ang;//角速度
+    state_last[2] = state_last_pos;//位置
+    state_last[3] = state_last_att;//姿态
 //printf("state_last_vel:%f,%f,%f\n\r",state_last_vel[0],state_last_vel[1],state_last_vel[2]);
 //printf("state_last[0]:%f,%f,%f\n\r",state_last[0][0],state_last[0][1],state_last[0][2]);   
     /*tempvec[0] = state_last[0];
@@ -175,7 +181,7 @@ static Vector3d state_last_att=Vector3d::Zero();
     tempvec[2] = state_last[2];
     tempvec[3] = state_last[3];*/
 
-    quad_equation(state_last,k1);
+    quad_equation(state_last,k1);//得到速度、角速度、位置、姿态 y(i)
     Vec12addVec12(tempvec,state_last ,k1, 0.5*h);
     quad_equation(tempvec,k2);
     Vec12addVec12(tempvec,state_last, k2, 0.5*h);
@@ -199,6 +205,39 @@ static Vector3d state_last_att=Vector3d::Zero();
     delete [] k3;
     delete [] k4;
 //printf("state_last[0]:%f,%f,%f\n\r",state_last[0][0],state_last[0][1],state_last[0][2]);
+#endif
+
+/******************改进欧拉********************/
+
+#ifdef EULER_IMPROVE
+    const double h=0.01;//步长
+
+    Vector3d* state_last = new Vector3d [4];//
+    Vector3d* tempvec = new Vector3d [4];//
+    Vector3d* slope = new Vector3d [4];//
+    Vector3d* k1 = new Vector3d [4];//f(xi,yi)
+    Vector3d* k2 = new Vector3d [4];//y`i+1=yi+hf(xi,yi)
+    Vector3d* k3 = new Vector3d [4];//f(xi+1,y`i+1)
+    state_last[0] = state_last_vel;//速度
+    state_last[1] = state_last_ang;//角速度
+    state_last[2] = state_last_pos;//位置
+    state_last[3] = state_last_att;//姿态
+
+    quad_equation(state_last,k1);//得到速度、角速度、位置、姿态 y(i)
+    Vec12addVec12(tempvec,state_last ,k1, h);
+    quad_equation(tempvec,k2);
+    quad_equation(k2,k3);
+    Vec12addVec12(tempvec,k1 ,k3, 1);
+
+    state_new_vel = tempvec[0] * h/2 + state_last_vel;
+    state_new_ang = tempvec[1] * h/2 + state_last_ang;
+    state_new_pos = tempvec[2] * h/2 + state_last_pos;
+    state_new_att = tempvec[3] * h/2 + state_last_att;
+    delete [] state_last;
+    delete [] tempvec;
+    delete [] k1;
+    delete [] k2;
+    delete [] k3;
 #endif
 
     
