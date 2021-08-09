@@ -20,7 +20,7 @@ using namespace std;
 x朝前，y朝右，z朝下。
  */
 
-
+//皇：这个类里面的成员有些冗余了，后续需要用三维向量的数组重构一下。
 class Quadrotor
 {
 private:
@@ -64,8 +64,11 @@ private:
 	Vector3d state_new_pos;
 	Vector3d state_new_att;
 
+
+	bool _reset_flag;
+
 public:
-	Quadrotor();
+	Quadrotor();	//修改构造函数的时候记得修改reset_all()函数
 	~Quadrotor(){}
 
 	 /*
@@ -84,7 +87,8 @@ void data_to_gcs(void);
 //从遥控器得到四个力矩
 void data_from_sbus(void);
 void Vec12addVec12(Vector3d* ansvec,const Vector3d* vec1, const Vector3d* vec2, const double num);
-
+void reset_all(void);	//重置飞行动力学模型，
+void reset_monitor(void);		//监视遥控器，触发重置标志
 };
 
  #endif

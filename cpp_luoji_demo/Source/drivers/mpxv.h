@@ -16,7 +16,7 @@ typedef struct{
 
 extern  mpxv_t  MPXV;
 
-void  Gravity(double altitude,double lat,double lon,double *g);
+void  Gravity(double altitude,double lat,double lon,double *g_);
 void  CaculMpxvRu(double altitude, double *ru_temp);
 void  CaculMpxvHigh(double high_vol);
 void  CaculMpxvSpeed(double speed_vol);

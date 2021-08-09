@@ -1,5 +1,7 @@
 #include "test.h"
 #include <Eigen\Dense>
+
+#include "..\drivers\nvram.h"
 using Eigen::Matrix2d;
 using Eigen::VectorXd;
 
@@ -20,21 +22,21 @@ int box::square(void)
 void test_com(void)
 {
    
-      	//»Ê£ºÕâÒ»¶Î´úÂë»¹Î´¸ãÃ÷°×ËüµÄ×÷ÓÃ£¬Ìõ¼ş±àÒë°ÑËüÔİÊ±ÆÁ±ÎÁË
+      	//çš‡ï¼šè¿™ä¸€æ®µä»£ç è¿˜æœªææ˜ç™½å®ƒçš„ä½œç”¨ï¼Œæ¡ä»¶ç¼–è¯‘æŠŠå®ƒæš‚æ—¶å±è”½äº†
        #if 0  
-        if(PPC_ComRxLen(COM1))                          //´®¿Ú
+        if(PPC_ComRxLen(COM1))                          //ä¸²å£
         {
-        	//°åÔØ´®¿Ú½ÓÊÕ»º³åÇøÊı¾İ³¤¶È²éÑ¯
+        	//æ¿è½½ä¸²å£æ¥æ”¶ç¼“å†²åŒºæ•°æ®é•¿åº¦æŸ¥è¯¢
     	    cnt =  PPC_ComRxLen(COM1);
-    	    //°åÔØ´®¿Ú¶ÁÈ¡»º³åÇøÊı¾İ£¬buf[]--Êı¾İ´æ´¢µØÖ·£¬len--¶ÁÈ¡µÄ³¤¶È	
+    	    //æ¿è½½ä¸²å£è¯»å–ç¼“å†²åŒºæ•°æ®ï¼Œbuf[]--æ•°æ®å­˜å‚¨åœ°å€ï¼Œlen--è¯»å–çš„é•¿åº¦	
     	    PPC_ComIn(COM1, buf,cnt);
-    	    //°åÔØ´®¿Ú·¢ËÍÊı¾İ		
+    	    //æ¿è½½ä¸²å£å‘é€æ•°æ®		
     	    PPC_ComOut(COM1, buf,cnt);	
         } 
        #endif 
         
-		//»Ê£ºÂÖÑ¯¸÷¸ö´®¿Ú
-        if(FComRxLen(FCOM1))                          //´®¿Ú
+		//çš‡ï¼šè½®è¯¢å„ä¸ªä¸²å£
+        if(FComRxLen(FCOM1))                          //ä¸²å£
         {
     	    cnt =  FComRxLen(FCOM1);
     	    FComIn(FCOM1, buf,cnt);
@@ -43,7 +45,7 @@ void test_com(void)
        
         }
         
-        if(FComRxLen(FCOM2))                          //´®¿Ú
+        if(FComRxLen(FCOM2))                          //ä¸²å£
         {
     	    cnt =  FComRxLen(FCOM2);
     	    FComIn(FCOM2, buf,cnt);
@@ -52,7 +54,7 @@ void test_com(void)
 
         }
         
-        if(FComRxLen(FCOM3))                          //´®¿Ú
+        if(FComRxLen(FCOM3))                          //ä¸²å£
         {
     	    cnt =  FComRxLen(FCOM3);
     	    FComIn(FCOM3, buf,cnt);
@@ -60,7 +62,7 @@ void test_com(void)
     	    FComOut(FCOM3, buf,cnt);       
         }
         
-        if(FComRxLen(FCOM4))                          //´®¿Ú
+        if(FComRxLen(FCOM4))                          //ä¸²å£
         {
     	    cnt =  FComRxLen(FCOM4);
     	    FComIn(FCOM4, buf,cnt);
@@ -68,7 +70,7 @@ void test_com(void)
     	    FComOut(FCOM4, buf,cnt);
         }
         
-        if(FComRxLen(FCOM5))                          //´®¿Ú
+        if(FComRxLen(FCOM5))                          //ä¸²å£
         {
     	    cnt =  FComRxLen(FCOM5);
     	    FComIn(FCOM5, buf,cnt);
@@ -77,7 +79,7 @@ void test_com(void)
 
         }
         
-        if(FComRxLen(FCOM6))                          //´®¿Ú
+        if(FComRxLen(FCOM6))                          //ä¸²å£
         {
     	    cnt =  FComRxLen(FCOM6);
     	    FComIn(FCOM6, buf,cnt);
@@ -85,7 +87,7 @@ void test_com(void)
     	    FComOut(FCOM6, buf,cnt);       
         }
         
-        if(FComRxLen(FCOM7))                          //´®¿Ú
+        if(FComRxLen(FCOM7))                          //ä¸²å£
         {
     	    cnt =  FComRxLen(FCOM7);
     	    FComIn(FCOM7, buf,cnt);
@@ -93,7 +95,7 @@ void test_com(void)
     	    FComOut(FCOM7, buf,cnt);      
         }
         
-        if(FComRxLen(FCOM8))                          //´®¿Ú
+        if(FComRxLen(FCOM8))                          //ä¸²å£
         {
     	    cnt =  FComRxLen(FCOM8);
     	    FComIn(FCOM8, buf,cnt);
@@ -133,4 +135,38 @@ void test_Eigen(void)
   	 printf("input1 is %f,%f,%f,%f\r\n",input1[0],input1[1],input1[2],input1[3]);
   	 printf("address of input2: %X\r\n",&input2); 
   	 printf("input2 is %f,%f,%f,%f\r\n",input2[0],input2[1],input2[2],input2[3]);
+}
+
+void NVram_test(void)
+{
+    /*unsigned char numa = 0xFF;
+    unsigned char numb = 0x63;
+    uint32_t temp1,temp2;
+    NvramWriteChar(3,numb);
+    //NvramWriteChar(2,numa);
+    temp1 = NvramReadChar(2);        
+    temp2 = NvramReadChar(3);*/
+    //0xFFFFæ˜¯1111 1111 1111 1111;
+    //0x63æ˜¯  0000 0000 0110 0011;
+    //å› ä¸ºpowerpcæ˜¯å¤§ç«¯å­˜å‚¨ï¼Œæ‰€ä»¥0x63å­˜å‚¨æ—¶æ˜¯åè¿‡æ¥çš„
+    //ç¨‹åºè¯»å–å‡ºæ¥çš„ä¿¡æ¯ï¼šnumbæ˜¯65379ï¼Œä¹Ÿå°±æ˜¯1111 1111 0110 0011
+    //0xFFFFçš„é«˜ä½åŠ ä¸Š0x63çš„ä½ä½ï¼Œ0xFF63ã€‚æ‰€ä»¥è¿™ä¸ªNVramä¹Ÿæ˜¯æ™®é€šçš„ä¸€æ¬¡åªèƒ½å†™å…¥ä¸€ä¸ªå­—èŠ‚ã€‚
+    //printf("readnuma is %X\r\n",temp1);
+    //printf("readnumb is %X\r\n",temp2);
+
+
+    unsigned char i=0;
+    unsigned short data[10];
+    for(i = 0;i<10;i++)
+    {
+        data[i]=4*i*100;
+        NvramWrite(2*i,data[i]);
+
+        //printf("readnuma is %d\r\n",NvramReadChar(i));
+    }
+        for(i = 0;i<10;i++)
+    {
+        printf("readnuma is %d\r\n",NvramRead(2*i));
+    }
+
 }

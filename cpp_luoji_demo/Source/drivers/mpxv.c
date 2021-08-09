@@ -4,7 +4,7 @@ mpxv_t  MPXV;
 static  double ru;
 
 
-void  Gravity(double altitude,double lat,double lon,double *g)
+void  Gravity(double altitude,double lat,double lon,double *g_)
 {
       double wgs_a,wgs_inv_f,wgs_omega_default,wgs_gm_default,wgs_gamma_e,wgs_k,wgs_e2,wgs_b;
       double sinlam,sin2lam,gamma_ts,m;
@@ -28,7 +28,7 @@ void  Gravity(double altitude,double lat,double lon,double *g)
 
       gamma_ts = wgs_gamma_e*(1.0 + wgs_k*sin2lam)/(sqrt(1.0 - wgs_e2*sin2lam));
       m = wgs_a*wgs_a*wgs_b*wgs_omega_default*wgs_omega_default/wgs_gm_default;      
-      *g = gamma_ts*(1.0-2.0*(1.0 + 1.0/wgs_inv_f + m - 2.0*sin2lam/wgs_inv_f)*altitude/wgs_a + 3.0*altitude*altitude/wgs_a/wgs_a);
+      *g_ = gamma_ts*(1.0-2.0*(1.0 + 1.0/wgs_inv_f + m - 2.0*sin2lam/wgs_inv_f)*altitude/wgs_a + 3.0*altitude*altitude/wgs_a/wgs_a);
 } 
 
 

@@ -2,10 +2,9 @@
 #include "..\drivers\gcs.h"
 #include "..\drivers\sbus.h"
 
-#define EULER      //皇：使用前进欧拉法
-#define ODE45      //皇：使用ode45
-#define EULER_IMPROVE //王：使用改进欧拉法   注释该行，则不编译EULER_IMPROVE
-
+//#define EULER     //皇：使用前进欧拉法
+//#define ODE45    //皇：使用ode45，ode45现在还有问题
+#define New_Euler
 extern Quadrotor _quadrotor;
 extern Gcs _gcs;
 extern Sbus _sbus;
@@ -17,7 +16,8 @@ extern Sbus _sbus;
  */
 Quadrotor::Quadrotor()
 {
-    printf("quadrotor construct!\r\n");
+    reset_all();
+   /* //printf("quadrotor construct!\r\n");
     Ix = 0.1676;     //kg*m2
     Iy = 0.1676;
     Iz = 0.29743;
@@ -60,6 +60,8 @@ Quadrotor::Quadrotor()
     state_new_ang=Vector3d::Zero();
     state_new_pos=Vector3d::Zero();
     state_new_att=Vector3d::Zero();
+
+    _reset_flag = false;*/
 }
 
 /**
@@ -123,11 +125,14 @@ void Quadrotor::quad_equation(void)
  * 函数作用：飞行动力学模型测试函数
  * 作者：皇陆亚
  * 时间：2021-08-01
+ * 备注：应该以100Hz的频率调用
  */
 void Quadrotor::test_quadrotor_dynamics(void)
 {
-
-    const float deltat = 0.01;
+if(_reset_flag)
+    reset_all();
+reset_monitor();
+const float deltat = 0.01;
   //static VectorXd state_last(12);
 static Vector3d state_last_vel=Vector3d::Zero();
 static Vector3d state_last_ang=Vector3d::Zero();
@@ -138,12 +143,14 @@ static Vector3d state_last_att=Vector3d::Zero();
 	state_last_ang = state_new_ang;
 	state_last_pos = state_new_pos;
 	state_last_att = state_new_att;
+
+
 	input_last = input_new;
 	input_new = input;
 
     quad_equation();
     
-//data_from_sbus();
+	data_from_sbus();
 /************前进欧拉**********************/   
 
 
@@ -155,25 +162,20 @@ static Vector3d state_last_att=Vector3d::Zero();
     state_new_pos = state_dot_pos * deltat + state_last_pos;
     state_new_att = state_dot_att * deltat + state_last_att;
 #endif
-
-
-/***********ODE45***************************/
-
-
 #ifdef ODE45
-    const double h=0.01;//步长
+    const double h=0.01;
 
-    Vector3d* state_last = new Vector3d [4];//y(i)
-    Vector3d* tempvec = new Vector3d [4];//k1+2*k2+2*k3+k4
-    Vector3d* slope = new Vector3d [4];//
-    Vector3d* k1 = new Vector3d [4];//k1=f(x(i),y(i))
-    Vector3d* k2 = new Vector3d [4];//k2=f(x(i)+h/2,y(i)+h*k1/2)
-    Vector3d* k3 = new Vector3d [4];//k3=f(x(i)+h/2,y(i)+h*k2/2)
-    Vector3d* k4 = new Vector3d [4];//k4=f(x(i)+h,y(i)+h*k3)
-    state_last[0] = state_last_vel;//速度
-    state_last[1] = state_last_ang;//角速度
-    state_last[2] = state_last_pos;//位置
-    state_last[3] = state_last_att;//姿态
+    Vector3d* state_last = new Vector3d [4];
+    Vector3d* tempvec = new Vector3d [4];
+    Vector3d* slope = new Vector3d [4];
+    Vector3d* k1 = new Vector3d [4];
+    Vector3d* k2 = new Vector3d [4];
+    Vector3d* k3 = new Vector3d [4];
+    Vector3d* k4 = new Vector3d [4];
+    state_last[0] = state_last_vel;
+    state_last[1] = state_last_ang;
+    state_last[2] = state_last_pos;
+    state_last[3] = state_last_att;
 //printf("state_last_vel:%f,%f,%f\n\r",state_last_vel[0],state_last_vel[1],state_last_vel[2]);
 //printf("state_last[0]:%f,%f,%f\n\r",state_last[0][0],state_last[0][1],state_last[0][2]);   
     /*tempvec[0] = state_last[0];
@@ -181,7 +183,7 @@ static Vector3d state_last_att=Vector3d::Zero();
     tempvec[2] = state_last[2];
     tempvec[3] = state_last[3];*/
 
-    quad_equation(state_last,k1);//得到速度、角速度、位置、姿态 y(i)
+    quad_equation(state_last,k1);
     Vec12addVec12(tempvec,state_last ,k1, 0.5*h);
     quad_equation(tempvec,k2);
     Vec12addVec12(tempvec,state_last, k2, 0.5*h);
@@ -206,40 +208,46 @@ static Vector3d state_last_att=Vector3d::Zero();
     delete [] k4;
 //printf("state_last[0]:%f,%f,%f\n\r",state_last[0][0],state_last[0][1],state_last[0][2]);
 #endif
+#ifdef New_Euler
+    const double h=0.01;
 
-/******************改进欧拉********************/
+    Vector3d* state_last = new Vector3d [4];
+    Vector3d* tempvec = new Vector3d [4];
+    Vector3d* slope = new Vector3d [4];
+    Vector3d* k1 = new Vector3d [4];
+    Vector3d* k2 = new Vector3d [4];
+    Vector3d* k3 = new Vector3d [4];
+    state_last[0] = state_last_vel;
+    state_last[1] = state_last_ang;
+    state_last[2] = state_last_pos;
+    state_last[3] = state_last_att;
+//printf("state_last_vel:%f,%f,%f\n\r",state_last_vel[0],state_last_vel[1],state_last_vel[2]);
+//printf("state_last[0]:%f,%f,%f\n\r",state_last[0][0],state_last[0][1],state_last[0][2]);   
+    /*tempvec[0] = state_last[0];
+    tempvec[1] = state_last[1];
+    tempvec[2] = state_last[2];
+    tempvec[3] = state_last[3];*/
 
-#ifdef EULER_IMPROVE
-    const double h=0.01;//步长
+    quad_equation(state_last,k1);	//f(xi,yi)
+    Vec12addVec12(k2,state_last ,k1, h);	//y~i+1
+    quad_equation(k2,k3);	//k3=f(xi+1,y~i+1)			
+    Vec12addVec12(tempvec,k1 ,k3, 1);	//f(xi,yi)+f(xi+1,y~i+1)
 
-    Vector3d* state_last = new Vector3d [4];//
-    Vector3d* tempvec = new Vector3d [4];//
-    Vector3d* slope = new Vector3d [4];//
-    Vector3d* k1 = new Vector3d [4];//f(xi,yi)
-    Vector3d* k2 = new Vector3d [4];//y`i+1=yi+hf(xi,yi)
-    Vector3d* k3 = new Vector3d [4];//f(xi+1,y`i+1)
-    state_last[0] = state_last_vel;//速度
-    state_last[1] = state_last_ang;//角速度
-    state_last[2] = state_last_pos;//位置
-    state_last[3] = state_last_att;//姿态
+    Vec12addVec12(slope,state_last, tempvec,0.5*h);	//yi+1
 
-    quad_equation(state_last,k1);//得到速度、角速度、位置、姿态 y(i)
-    Vec12addVec12(tempvec,state_last ,k1, h);
-    quad_equation(tempvec,k2);
-    quad_equation(k2,k3);
-    Vec12addVec12(tempvec,k1 ,k3, 1);
-
-    state_new_vel = tempvec[0] * h/2 + state_last_vel;
-    state_new_ang = tempvec[1] * h/2 + state_last_ang;
-    state_new_pos = tempvec[2] * h/2 + state_last_pos;
-    state_new_att = tempvec[3] * h/2 + state_last_att;
+    state_new_vel = slope[0] ;
+    state_new_ang = slope[1] ;
+    state_new_pos = slope[2] ;
+    state_new_att = slope[3] ;
     delete [] state_last;
     delete [] tempvec;
+    delete [] slope;
     delete [] k1;
     delete [] k2;
     delete [] k3;
-#endif
 
+
+#endif
     
 	state_vel=state_new_vel;
 	state_ang=state_new_ang;
@@ -295,10 +303,13 @@ void Quadrotor::data_to_gcs(void)
  */
 void Quadrotor::data_from_sbus(void)
 {
-    input[1]=(_sbus.GetChannel(1)-1500)/300;   //皇：ail副翼，滚转，绕x轴转
-    input[2]=(_sbus.GetChannel(2)-1500)/300;   //皇：ele升降，绕y轴
-    input[0]=-_sbus.GetChannel(3)/40;   //皇：油门
-    input[3]=(_sbus.GetChannel(4)-1500)/300;   //皇：rud偏航，绕z轴
+    if(!_sbus.failsafe())
+    {
+        input[1]=(_sbus.GetChannel(1)-1500)/300;   //皇：ail副翼，滚转，绕x轴转
+        input[2]=(_sbus.GetChannel(2)-1500)/300;   //皇：ele升降，绕y轴
+        input[0]=_sbus.GetChannel(3)/40;   //皇：油门
+        input[3]=(_sbus.GetChannel(4)-1500)/300;   //皇：rud偏航，绕z轴
+    }
 }
 
 
@@ -363,4 +374,65 @@ void Quadrotor::Vec12addVec12(Vector3d* ansvec,const Vector3d* vec1, const Vecto
     ansvec[1]=vec1[1]+vec2[1]*num;
     ansvec[2]=vec1[2]+vec2[2]*num;
     ansvec[3]=vec1[3]+vec2[3]*num;
+}
+
+/**
+ * 函数作用：重置飞行动力学模型
+ * 作者：皇陆亚
+ * 时间：2021-08-05
+ * 备注：这个里面的内容应该和构造函数的统一起来，
+ */
+void Quadrotor::reset_all(void)
+{
+    //printf("quadrotor construct!\r\n");
+    Ix = 0.1676;     //kg*m2
+    Iy = 0.1676;
+    Iz = 0.29743;
+
+    //皇：转动惯量对角矩阵
+    inertia = Matrix3d(Vector3d(Ix, Iy, Iz).asDiagonal());
+    m = 2.356; //飞行器重量
+
+    inertia_inv = inertia.inverse();        //皇：转动惯量对角矩阵的逆
+
+
+
+    V0 = Vector3d::Zero(3);                //皇：初始速度
+    omega_start = Vector3d::Zero(3);       //皇：初始欧拉角
+
+
+    //四个输入量 
+    input<<0,0,0,0;
+
+
+    input_last = Vector4d::Zero();
+    input_new = Vector4d::Zero();
+
+    //初始状态数组，三个速度，三个角速度，三个位置，三个姿态角 
+    //VectorXd state(12);
+    state_vel=Vector3d::Zero();
+    state_ang=Vector3d::Zero();
+    state_pos=Vector3d::Zero();
+    state_att=Vector3d::Zero();
+
+    //VectorXd state_dot(12);
+    state_dot_vel=Vector3d::Zero();
+    state_dot_ang=Vector3d::Zero();
+    state_dot_pos=Vector3d::Zero();
+    state_dot_att=Vector3d::Zero();
+
+
+    //VectorXd state_new(12);
+    state_new_vel=Vector3d::Zero();
+    state_new_ang=Vector3d::Zero();
+    state_new_pos=Vector3d::Zero();
+    state_new_att=Vector3d::Zero();
+
+    _reset_flag = false;
+}
+
+void Quadrotor::reset_monitor(void)
+{
+if((_sbus.GetChannel(5)>1500) && (_sbus.GetLastChannel(5)<1400))   //皇：只有遥控器跳变的时候才触发重置标志
+    _reset_flag = true; 
 }

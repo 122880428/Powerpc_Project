@@ -14,11 +14,11 @@ XFCommStruc            XFCOM[9];
 */
 
 /*
-* º¯Êı½éÉÜ£ºÉèÖÃ´®¿Ú»ùµØÖ·³õÊ¼»¯
-* º¯ÊıÊµÏÖ£º
-* ÊäÈë²ÎÊı£ºÎŞ
-* ·µ»ØÖµ  £ºÎŞ
-* ×¢ÒâÊÂÏî£ºÎŞ
+* å‡½æ•°ä»‹ç»ï¼šè®¾ç½®ä¸²å£åŸºåœ°å€åˆå§‹åŒ–
+* å‡½æ•°å®ç°ï¼š
+* è¾“å…¥å‚æ•°ï¼šæ— 
+* è¿”å›å€¼  ï¼šæ— 
+* æ³¨æ„äº‹é¡¹ï¼šæ— 
 */
 void FComSetIOBase(void)
 {
@@ -39,11 +39,11 @@ void FComSetIOBase(void)
 */
 
 /*
-* º¯Êı½éÉÜ£º´®¿Ú³õÊ¼»¯
-* º¯ÊıÊµÏÖ£º
-* ÊäÈë²ÎÊı£ºPort--Í¨µÀºÅ£¬BaudRate--²¨ÌØÂÊ  Parity--ÆæÅ¼Ğ£ÑéÎ»£¬StopBit--Í£Ö¹Î»£¬RxFifoNum--½ÓÊÕ»º´æ´óĞ¡£¬Mode_422_232-´®¿ÚÄ£Ê½
-* ·µ»ØÖµ  £ºÎŞ
-* ×¢ÒâÊÂÏî£ºÎŞ
+* å‡½æ•°ä»‹ç»ï¼šä¸²å£åˆå§‹åŒ–
+* å‡½æ•°å®ç°ï¼š
+* è¾“å…¥å‚æ•°ï¼šPort--é€šé“å·ï¼ŒBaudRate--æ³¢ç‰¹ç‡  Parity--å¥‡å¶æ ¡éªŒä½ï¼ŒStopBit--åœæ­¢ä½ï¼ŒRxFifoNum--æ¥æ”¶ç¼“å­˜å¤§å°ï¼ŒMode_422_232-ä¸²å£æ¨¡å¼
+* è¿”å›å€¼  ï¼šæ— 
+* æ³¨æ„äº‹é¡¹ï¼šæ— 
 */    		
 void FComInit(unsigned char port, long baudrate,unsigned char parity,unsigned char StopBit,unsigned short rxfifonum,unsigned char mode_422_232)
 {
@@ -64,7 +64,7 @@ void FComInit(unsigned char port, long baudrate,unsigned char parity,unsigned ch
 
     if(rxfifonum > XFComFifoRxLen)
         rxfifonum = XFComFifoRxLen;    
-    *(volatile unsigned short *)(XFCOM[port].Base + FCOM_UART_FCR) =  rxfifonum;      /*2??¨¹3?1y350*/
+    *(volatile unsigned short *)(XFCOM[port].Base + FCOM_UART_FCR) =  rxfifonum;      /*2??Ã¼3?1y350*/
     *(volatile unsigned short *)(XFCOM[port].Base + FCOM_UART_422_232) = mode_422_232;
     *(volatile unsigned short *)(XFCOM[port].Base + FCOM_UART_RX_EN)  = 0x1;
     *(volatile unsigned short *)(XFCOM[port].Base + FCOM_UART_TX_EN)  = 0x1;
@@ -84,11 +84,11 @@ void FComInit(unsigned char port, long baudrate,unsigned char parity,unsigned ch
 
 
 /*
-* º¯Êı½éÉÜ£º´®¿Ú½ÓÊÕÖĞ¶Ï´¦Àíº¯Êı
-* º¯ÊıÊµÏÖ£º
-* ÊäÈë²ÎÊı£ºport--Í¨µÀºÅ
-* ·µ»ØÖµ  £ºÎŞ
-* ×¢ÒâÊÂÏî£ºÎŞ
+* å‡½æ•°ä»‹ç»ï¼šä¸²å£æ¥æ”¶ä¸­æ–­å¤„ç†å‡½æ•°
+* å‡½æ•°å®ç°ï¼š
+* è¾“å…¥å‚æ•°ï¼šport--é€šé“å·
+* è¿”å›å€¼  ï¼šæ— 
+* æ³¨æ„äº‹é¡¹ï¼šæ— 
 */
 void FComRxInterruptHandler(unsigned char port)
 { 
@@ -113,11 +113,11 @@ void FComRxInterruptHandler(unsigned char port)
 
 
 /*
-* º¯Êı½éÉÜ£º´®¿ÚÖĞ¶Ï´¦Àíº¯Êı
-* º¯ÊıÊµÏÖ£º
-* ÊäÈë²ÎÊı£ºÎŞ
-* ·µ»ØÖµ  £ºÎŞ
-* ×¢ÒâÊÂÏî£ºÎŞ
+* å‡½æ•°ä»‹ç»ï¼šä¸²å£ä¸­æ–­å¤„ç†å‡½æ•°
+* å‡½æ•°å®ç°ï¼š
+* è¾“å…¥å‚æ•°ï¼šæ— 
+* è¿”å›å€¼  ï¼šæ— 
+* æ³¨æ„äº‹é¡¹ï¼šæ— 
 */
 void  FComInterruptHandler(void)
 {
@@ -194,11 +194,11 @@ void  FComInterruptHandler(void)
 */
 
 /*
-* º¯Êı½éÉÜ£º´®¿Ú½ÓÊÕ»º³åÇøÊı¾İ³¤¶È²éÑ¯
-* º¯ÊıÊµÏÖ£º
-* ÊäÈë²ÎÊı£ºport--Í¨µÀºÅ
-* ·µ»ØÖµ  £ºlen--Êı¾İ³¤¶È
-* ×¢ÒâÊÂÏî£ºÎŞ
+* å‡½æ•°ä»‹ç»ï¼šä¸²å£æ¥æ”¶ç¼“å†²åŒºæ•°æ®é•¿åº¦æŸ¥è¯¢
+* å‡½æ•°å®ç°ï¼š
+* è¾“å…¥å‚æ•°ï¼šport--é€šé“å·
+* è¿”å›å€¼  ï¼šlen--æ•°æ®é•¿åº¦
+* æ³¨æ„äº‹é¡¹ï¼šæ— 
 */
 unsigned short  FComRxLen (unsigned char port)
 {
@@ -217,11 +217,11 @@ unsigned short  FComRxLen (unsigned char port)
 */
 
 /*
-* º¯Êı½éÉÜ£º´®¿Ú·¢ËÍ»º³åÇøÊı¾İ³¤¶È²éÑ¯
-* º¯ÊıÊµÏÖ£º
-* ÊäÈë²ÎÊı£ºport--Í¨µÀºÅ
-* ·µ»ØÖµ  £ºlen--Êı¾İ³¤¶È
-* ×¢ÒâÊÂÏî£ºÎŞ
+* å‡½æ•°ä»‹ç»ï¼šä¸²å£å‘é€ç¼“å†²åŒºæ•°æ®é•¿åº¦æŸ¥è¯¢
+* å‡½æ•°å®ç°ï¼š
+* è¾“å…¥å‚æ•°ï¼šport--é€šé“å·
+* è¿”å›å€¼  ï¼šlen--æ•°æ®é•¿åº¦
+* æ³¨æ„äº‹é¡¹ï¼šæ— 
 */
 unsigned short  FComTxLen (unsigned char port)
 {
@@ -241,11 +241,11 @@ unsigned short  FComTxLen (unsigned char port)
 */
 
 /*
-* º¯Êı½éÉÜ£º´®¿Ú¶ÁÈ¡»º³åÇøÊı¾İ
-* º¯ÊıÊµÏÖ£º
-* ÊäÈë²ÎÊı£ºport--Í¨µÀºÅ£¬buf[]--Êı¾İ´æ´¢µØÖ·£¬len--¶ÁÈ¡µÄ³¤¶È
-* ·µ»ØÖµ  £ºNumIn--Êµ¼Ê¶ÁÈ¡Êı¾İ³¤¶È
-* ×¢ÒâÊÂÏî£ºÎŞ
+* å‡½æ•°ä»‹ç»ï¼šä¸²å£è¯»å–ç¼“å†²åŒºæ•°æ®
+* å‡½æ•°å®ç°ï¼š
+* è¾“å…¥å‚æ•°ï¼šport--é€šé“å·ï¼Œbuf[]--æ•°æ®å­˜å‚¨åœ°å€ï¼Œlen--è¯»å–çš„é•¿åº¦
+* è¿”å›å€¼  ï¼šNumIn--å®é™…è¯»å–æ•°æ®é•¿åº¦
+* æ³¨æ„äº‹é¡¹ï¼šæ— 
 */
 unsigned short  FComIn (unsigned char port,  unsigned char buf[], unsigned short len)
 {
@@ -275,11 +275,11 @@ unsigned short  FComIn (unsigned char port,  unsigned char buf[], unsigned short
 */
 
 /*
-* º¯Êı½éÉÜ£º´®¿Ú·¢ËÍ»º³åÇøÊı¾İ
-* º¯ÊıÊµÏÖ£º
-* ÊäÈë²ÎÊı£ºport--Í¨µÀºÅ£¬buf[]--Êı¾İ´æ´¢µØÖ·£¬len--¶ÁÈ¡µÄ³¤¶È
-* ·µ»ØÖµ  £ºcnt--·¢ËÍÊı¾İ³¤¶È
-* ×¢ÒâÊÂÏî£ºÎŞ
+* å‡½æ•°ä»‹ç»ï¼šä¸²å£å‘é€ç¼“å†²åŒºæ•°æ®
+* å‡½æ•°å®ç°ï¼š
+* è¾“å…¥å‚æ•°ï¼šport--é€šé“å·ï¼Œbuf[]--æ•°æ®å­˜å‚¨åœ°å€ï¼Œlen--è¯»å–çš„é•¿åº¦
+* è¿”å›å€¼  ï¼šcnt--å‘é€æ•°æ®é•¿åº¦
+* æ³¨æ„äº‹é¡¹ï¼šæ— 
 */
 unsigned short  FComOut(unsigned char port, unsigned char buf[], unsigned short len)
 {
@@ -316,7 +316,40 @@ unsigned short  FComOut(unsigned char port, unsigned char buf[], unsigned short 
 	 return(cnt);	 
 }
 
-
+unsigned short  FComOut_mavlink(unsigned char port, const uint8_t *buf, int len)
+{
+    unsigned short  idx;
+    unsigned short cnttt,cnt;
+    
+  
+    for (idx=0;idx<len;idx++) 
+    {
+        XFCOM[port].TxBuf[XFCOM[port].Txhead++]=buf[idx];
+        if(XFCOM[port].Txhead >= XFComTxBuffSize)        
+           XFCOM[port].Txhead = 0;
+    }
+    
+    
+    if (FComTxLen(port)) 
+    { 
+ 
+         cnttt = *(volatile unsigned short *)(XFCOM[port].Base + FCOM_UART_TXCNT);
+          
+         if(FComTxLen(port) < (XFComFifoTxLen-cnttt))
+             cnt = FComTxLen(port);
+         else
+             cnt = (XFComFifoTxLen- cnttt);
+                     
+         for(idx = 0; idx < cnt; idx++)
+         {
+            *(volatile unsigned short *)(XFCOM[port].Base+FCOM_UART_TX_REG) = XFCOM[port].TxBuf[XFCOM[port].Txtail++];
+            if(XFCOM[port].Txtail >= XFComTxBuffSize)        
+                XFCOM[port].Txtail = 0; 
+         }     
+              
+      }
+     return(cnt);
+}
 
 
 /*
@@ -326,11 +359,11 @@ unsigned short  FComOut(unsigned char port, unsigned char buf[], unsigned short 
 */
 
 /*
-* º¯Êı½éÉÜ£º
-* º¯ÊıÊµÏÖ£º
-* ÊäÈë²ÎÊı£ºport--Í¨µÀºÅ
-* ·µ»ØÖµ  £ºNumIn--
-* ×¢ÒâÊÂÏî£ºÎŞ
+* å‡½æ•°ä»‹ç»ï¼š
+* å‡½æ•°å®ç°ï¼š
+* è¾“å…¥å‚æ•°ï¼šport--é€šé“å·
+* è¿”å›å€¼  ï¼šNumIn--
+* æ³¨æ„äº‹é¡¹ï¼šæ— 
 */
 unsigned short  FComInPoll (unsigned char port)
 {

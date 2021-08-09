@@ -3,6 +3,7 @@
 
 
 #include "ppc5125Intr.h"
+#include <stdint.h>
 /*
 *********************************************************************************************************
 *                                               CONSTANTS
@@ -70,7 +71,7 @@ extern XFCommStruc             XFCOM[9];
 #define  COMM_PARITY_EVEN        1
 #define  COMM_PARITY_ODD         2
 
-//»Ê£º¹ÒÔØÔÚfpgaÏÂµÄ´®¿Ú£¬Çø±ğÓÚcpuµÄ´®¿Ú
+//çš‡ï¼šæŒ‚è½½åœ¨fpgaä¸‹çš„ä¸²å£ï¼ŒåŒºåˆ«äºcpuçš„ä¸²å£
 #define  FCOM1           0               /*[Com Specific]*/             
 #define  FCOM2           1
 #define  FCOM3           2                         
@@ -94,15 +95,16 @@ extern XFCommStruc            XFCOM[9];             /* XR16L788 */
 *********************************************************************************************************
 */
 
-void           FComSetIOBase(void);															/*ÉèÖÃ´®¿Ú»ùµØÖ·³õÊ¼»¯*/    
-void FComInit(unsigned char Port, long BaudRate,unsigned char Parity,unsigned char StopBit,unsigned short RxFifoNum,unsigned char Mode_422_232);		/*´®¿Ú³õÊ¼»¯*/
-unsigned short  FComIn (unsigned char port,  unsigned char buf[], unsigned short len);		/*´®¿Ú¶ÁÈ¡»º³åÇøÊı¾İ*/
-unsigned short  FComOut(unsigned char port, unsigned char buf[], unsigned short len);		/*´®¿Ú·¢ËÍ»º³åÇøÊı¾İ*/
-unsigned short  FComTxLen (unsigned char port);												/*´®¿Ú·¢ËÍ»º³åÇøÊı¾İ³¤¶È²éÑ¯*/
-unsigned short  FComRxLen (unsigned char port);												/*´®¿Ú½ÓÊÕ»º³åÇøÊı¾İ³¤¶È²éÑ¯*/
+void           FComSetIOBase(void);															/*è®¾ç½®ä¸²å£åŸºåœ°å€åˆå§‹åŒ–*/    
+void FComInit(unsigned char Port, long BaudRate,unsigned char Parity,unsigned char StopBit,unsigned short RxFifoNum,unsigned char Mode_422_232);		/*ä¸²å£åˆå§‹åŒ–*/
+unsigned short  FComIn (unsigned char port,  unsigned char buf[], unsigned short len);		/*ä¸²å£è¯»å–ç¼“å†²åŒºæ•°æ®*/
+unsigned short  FComOut(unsigned char port, unsigned char buf[], unsigned short len);		/*ä¸²å£å‘é€ç¼“å†²åŒºæ•°æ®*/
+unsigned short  FComOut_mavlink(unsigned char port, const uint8_t *buf, int len);	
+unsigned short  FComTxLen (unsigned char port);												/*ä¸²å£å‘é€ç¼“å†²åŒºæ•°æ®é•¿åº¦æŸ¥è¯¢*/
+unsigned short  FComRxLen (unsigned char port);												/*ä¸²å£æ¥æ”¶ç¼“å†²åŒºæ•°æ®é•¿åº¦æŸ¥è¯¢*/
 unsigned short FComInPoll (unsigned char port);												/**/
-void  FComRxInterruptHandler(unsigned char port);											/*´®¿ÚÖĞ¶Ï´¦Àíº¯Êı*/
-void  FComInterruptHandler(void);															/*´®¿Ú½ÓÊÕÖĞ¶Ï´¦Àíº¯Êı*/
+void  FComRxInterruptHandler(unsigned char port);											/*ä¸²å£ä¸­æ–­å¤„ç†å‡½æ•°*/
+void  FComInterruptHandler(void);															/*ä¸²å£æ¥æ”¶ä¸­æ–­å¤„ç†å‡½æ•°*/
 
 
 

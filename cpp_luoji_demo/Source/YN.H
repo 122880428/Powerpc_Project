@@ -59,7 +59,7 @@ typedef struct  {
 #include "drivers\ppccom.h"
 #include "drivers\xr16l788.h"
 #include "drivers\wdt.h"
-#include "drivers\nvram.h"
+//#include "drivers\nvram.h"
 #include "drivers\mscan.h"
 #include "drivers\flash.h"
 #include "drivers\fpm.h"

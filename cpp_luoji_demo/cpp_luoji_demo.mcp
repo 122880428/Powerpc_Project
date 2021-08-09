@@ -1140,13 +1140,6 @@
                 </FILE>
                 <FILE>
                     <PATHTYPE>Name</PATHTYPE>
-                    <PATH>nvram.c</PATH>
-                    <PATHFORMAT>Windows</PATHFORMAT>
-                    <FILEKIND>Text</FILEKIND>
-                    <FILEFLAGS>Debug</FILEFLAGS>
-                </FILE>
-                <FILE>
-                    <PATHTYPE>Name</PATHTYPE>
                     <PATH>nvram.h</PATH>
                     <PATHFORMAT>Windows</PATHFORMAT>
                     <FILEKIND>Text</FILEKIND>
@@ -1414,6 +1407,34 @@
                 <FILE>
                     <PATHTYPE>Name</PATHTYPE>
                     <PATH>gcs.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS></FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>mavlink.cpp</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS>Debug</FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>nvram.cpp</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS>Debug</FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>AP_Param.cpp</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS>Debug</FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>AP_Param.h</PATH>
                     <PATHFORMAT>Windows</PATHFORMAT>
                     <FILEKIND>Text</FILEKIND>
                     <FILEFLAGS></FILEFLAGS>
@@ -1552,11 +1573,6 @@
                 </FILEREF>
                 <FILEREF>
                     <PATHTYPE>Name</PATHTYPE>
-                    <PATH>nvram.c</PATH>
-                    <PATHFORMAT>Windows</PATHFORMAT>
-                </FILEREF>
-                <FILEREF>
-                    <PATHTYPE>Name</PATHTYPE>
                     <PATH>nvram.h</PATH>
                     <PATHFORMAT>Windows</PATHFORMAT>
                 </FILEREF>
@@ -1705,6 +1721,26 @@
                     <PATH>gcs.h</PATH>
                     <PATHFORMAT>Windows</PATHFORMAT>
                 </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>mavlink.cpp</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>nvram.cpp</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>AP_Param.cpp</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>AP_Param.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
             </LINKORDER>
         </TARGET>
     </TARGETLIST>
@@ -1835,12 +1871,6 @@
                 <FILEREF>
                     <TARGETNAME>RAM</TARGETNAME>
                     <PATHTYPE>Name</PATHTYPE>
-                    <PATH>nvram.c</PATH>
-                    <PATHFORMAT>Windows</PATHFORMAT>
-                </FILEREF>
-                <FILEREF>
-                    <TARGETNAME>RAM</TARGETNAME>
-                    <PATHTYPE>Name</PATHTYPE>
                     <PATH>nvram.h</PATH>
                     <PATHFORMAT>Windows</PATHFORMAT>
                 </FILEREF>
@@ -1958,6 +1988,12 @@
                     <PATH>gcs.h</PATH>
                     <PATHFORMAT>Windows</PATHFORMAT>
                 </FILEREF>
+                <FILEREF>
+                    <TARGETNAME>RAM</TARGETNAME>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>nvram.cpp</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
             </GROUP>
             <GROUP><NAME>startup</NAME>
                 <FILEREF>
@@ -1988,6 +2024,12 @@
                     <TARGETNAME>RAM</TARGETNAME>
                     <PATHTYPE>Name</PATHTYPE>
                     <PATH>test.cpp</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <TARGETNAME>RAM</TARGETNAME>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>mavlink.cpp</PATH>
                     <PATHFORMAT>Windows</PATHFORMAT>
                 </FILEREF>
             </GROUP>
@@ -2054,6 +2096,22 @@
                     <PATH>quadrotor.h</PATH>
                     <PATHFORMAT>Windows</PATHFORMAT>
                 </FILEREF>
+            </GROUP>
+            <GROUP><NAME>libraries</NAME>
+                <GROUP><NAME>AP_Param</NAME>
+                    <FILEREF>
+                        <TARGETNAME>RAM</TARGETNAME>
+                        <PATHTYPE>Name</PATHTYPE>
+                        <PATH>AP_Param.cpp</PATH>
+                        <PATHFORMAT>Windows</PATHFORMAT>
+                    </FILEREF>
+                    <FILEREF>
+                        <TARGETNAME>RAM</TARGETNAME>
+                        <PATHTYPE>Name</PATHTYPE>
+                        <PATH>AP_Param.h</PATH>
+                        <PATHFORMAT>Windows</PATHFORMAT>
+                    </FILEREF>
+                </GROUP>
             </GROUP>
             <FILEREF>
                 <TARGETNAME>RAM</TARGETNAME>

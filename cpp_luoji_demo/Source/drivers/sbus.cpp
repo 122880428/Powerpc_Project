@@ -1,7 +1,7 @@
 #include "YN.h"
 #include "sbus.h"
 
-
+extern bool id_ok;
 Sbus _sbus;
 
 /*
@@ -20,7 +20,7 @@ void Sbus::debug_sbus()
     for(i=1;i<15;i++)
     {
         if(RC_channels[i] != 0)
-            printf("this is channel %d:%d\r\n",i,GetChannel(i));
+            printf("this is channel %d:%d\r\n",i,Get_Scaled_Channel(i));
         
     }
 }
@@ -29,7 +29,26 @@ void Sbus::debug_sbus()
 void Sbus::init(void)//皇：初始化串口
 {
     FComInit(FCOM9,100000,COM_PARITY_EVEN,2,8,RS232);//皇：sbus是Fcom9，波特率10K，偶校验，2位停止位，232模式
+    unsigned char i;    
+    if(id_ok)
+    {
+       
+        for(i = 0;i<16;i++)
+        {
+            _RC_min[i].load();
+        //printf("_RC_min[%d]is:%d\r\n",i,_RC_min[i].get());
+            _RC_max[i].load();
+        //printf("_RC_max[%d]is:%d\r\n",i,_RC_max[i].get());
+        }
+    }
+    else
+    {
+        for(i = 0;i<16;i++)
+            _RC_min[i].set(1100);
+            _RC_max[i].set(1900);
+    }
     init_flag = true;
+
 }
 /**
  * 函数作用：sbus解码任务运行
@@ -39,7 +58,9 @@ void Sbus::init(void)//皇：初始化串口
  */
 bool Sbus::run(void)    //皇：用于接收遥控器信号
 {
-
+//RC_save_cal_val();
+    RC_calc_monitor();
+    
     //皇：利用unsigned char的范围是0~255，溢出后从0开始，构成循环数组
     static unsigned char    head=0, tail=0,temp=0;      
     static unsigned char    ptr, len,idx;
@@ -72,7 +93,7 @@ bool Sbus::run(void)    //皇：用于接收遥控器信号
     {
         temp =(unsigned char)(tail+24);
         
-        if((buf[tail]==0x0F))           //皇：这里的解码还不太严谨
+        if((buf[tail]==0x0F) && (buf[temp]==0x00))           //皇：这里的解码还不太严谨
         {
 
             ptr = tail; 
@@ -105,6 +126,11 @@ bool Sbus::run(void)    //皇：用于接收遥控器信号
  */
 void  Sbus::Sbus_Decode(unsigned char buffer[]) //皇：解码部分
 {
+    unsigned char i = 0;
+
+    for(i=0;i<15;i++)
+        _last_rc_channels[i] = RC_channels[i];
+
     RC_channels[0]  = ((buffer[1]    |buffer[2]<<8)                 & 0x07FF);
     RC_channels[1]  = ((buffer[2]>>3 |buffer[3]<<5)                 & 0x07FF);
     RC_channels[2]  = ((buffer[3]>>6 |buffer[4]<<2 |buffer[5]<<10)  & 0x07FF);
@@ -121,6 +147,19 @@ void  Sbus::Sbus_Decode(unsigned char buffer[]) //皇：解码部分
     RC_channels[13] = ((buffer[18]>>7|buffer[19]<<1|buffer[20]<<9)  & 0x07FF);
     RC_channels[14] = ((buffer[20]>>2|buffer[21]<<6)                & 0x07FF); 
     RC_channels[15] = ((buffer[21]>>5|buffer[22]<<3)                & 0x07FF);
+    sbus_flag = buffer[23];
+    if(sbus_flag & 0x10)        //失控了
+    {
+        //RC_channels_reset();
+        failsafe_flag = true;
+        printf("RC is failsafe!\r\n");
+    }
+    else if(sbus_flag & 0x20)   //丢包了
+    {
+       
+    }
+        failsafe_flag = false;
+
 }
 
 /**
@@ -155,4 +194,104 @@ int Sbus::GetChannel(int channel)
         return temp;
     }
     else return 0;
+}
+/*
+* 函数介绍：获取SBUS某个通道上一次的值
+* 函数实现：
+* 输入参数：channel--通道号
+* 返回值  ：temp--SBUS各通道数据值
+* 注意事项：无
+*/
+int Sbus::GetLastChannel(int channel)
+{
+    int temp;
+    if((channel>=1)&&(channel<=16))
+    {
+        temp = ((int)((_last_rc_channels[channel - 1] -1024)*0.6 + 1500));    //皇：各个通道的值缩放到1100~1900
+        return temp;
+    }
+    else return 0;
+}
+
+/**
+ * 函数作用：记录这一段时间遥控器的最大最小值
+ * 作者：皇陆亚
+ * 时间：2021-08-06
+ */
+void Sbus::RC_calculate(void)
+{
+    
+if(_calculate_flag)
+    {
+        unsigned char i = 0;
+        for (i = 0; i<16;i++)
+        {
+            if((_RC_min[i].get() > GetChannel(i+1) || _RC_min[i].get()<500))
+                _RC_min[i].set(GetChannel(i+1));
+            
+            if(_RC_max[i].get()< GetChannel(i+1))
+                _RC_max[i].set(GetChannel(i+1));
+            
+        }
+        printf("RC_calculating......\r");
+    }
+}
+
+/**
+ * 函数作用：监控遥控器校准的命令
+ * 作者：皇陆亚
+ * 时间：2021-08-06
+ */
+void Sbus::RC_calc_monitor(void)
+{
+//这里用处理过的数据会出现一些小问题。后面不能通过遥控器来控制是否进入校准程序
+//应该用原始数据的，但是原始数据我又记不得是多少了，也懒的回算了
+    if((GetChannel(6)>1800)&& (GetChannel(6)<2000))     //六通道处于高位时启动校准         
+        _calculate_flag = true;
+    if((GetChannel(6)<1700)&& (GetLastChannel(6)>1800))  //六通道高位拨回中位时保存数据           
+        RC_save_cal_val();
+    RC_calculate();
+}
+
+void Sbus::RC_save_cal_val(void)
+{
+    unsigned char i = 0;
+    for (i = 0; i<16;i++)
+        {
+            _RC_min[i].save();   
+            _RC_max[i].save();
+        }
+    _calculate_flag = false;
+}
+
+/**
+ * 函数作用：遥控器数值缩放到严格的1100~1900
+ * 作者：皇陆亚
+ * 时间：2021-08-07
+ */
+uint16_t Sbus::Get_Scaled_Channel(uint8_t channel)
+{
+    float temp;
+    if((channel>=1)&&(channel<=16))
+    {
+        temp = (((RC_channels[channel - 1] -1024)*0.6 + 1500));    //皇：各个通道的值缩放到1100~1900
+        temp = (temp-_RC_min[channel - 1].get())*800/(_RC_max[channel - 1].get()-_RC_min[channel - 1].get())+1100;
+        return (uint16_t)temp;
+    }
+    else return 0;
+}
+
+/**
+ * 函数作用：遥控器数据放到中位
+ * 作者：皇陆亚
+ * 时间：2021-08-07
+ */
+void Sbus::RC_channels_reset(void)
+{
+    unsigned char i = 0;
+    for (i = 0; i<16;i++)
+        {
+            RC_channels[i] = 1024;
+        }
+    RC_channels[3-1] = 0;
 }
